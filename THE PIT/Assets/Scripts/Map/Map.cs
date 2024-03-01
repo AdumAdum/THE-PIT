@@ -24,14 +24,30 @@ public class Map : MonoBehaviour
 
                 //Instantiate a square and add it to the battlemap
                 var overSquare = Instantiate(overSqaurePrefab, overSquareContainer.transform);
-                overSquare.coords = new Vector2Int(x,y);
+                overSquare.TieToMap(this, new Vector2Int(x,y), tileMap.GetTile(new Vector3Int(x+bounds.min.x,y+bounds.min.y,(int)transform.position.z)));
                 BattleMap[x,y] = overSquare;
+
 
                 // Move it to the corresponding spot on the grid
                 var tilePosition = tileMap.GetCellCenterWorld(new Vector3Int(x+bounds.min.x,y+bounds.min.y,(int)transform.position.z+1));
                 overSquare.transform.position = tilePosition;
             }
         }
+    }
+
+    public void UpdateUnitPosition(Component sender, object data)
+    {
+        if (data is not Vector2Int || sender is not Unit) return;
+        
+        Unit unit = (Unit) sender;
+        Vector2Int coords = (Vector2Int) data;
+
+        // Quickest way I found online to check if an array index is in bounds.
+        if (coords.x < 0 || coords.x >= BattleMap.Length || coords.y < 0 || coords.y >= BattleMap.Length) return;
+
+        // Move unit and tell the square it has a dude on it
+        unit.gameObject.transform.position = BattleMap[coords.x,coords.y].transform.position;
+        BattleMap[coords.x,coords.y].unitOn = unit;
     }
 }
 
