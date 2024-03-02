@@ -7,15 +7,25 @@ public class Square : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
 
-    public Vector2Int coords;
-    public Dictionary<string, int> terrain;
+    public Vector2Int coords { get; private set; }
+    public Dictionary<string, int> terrain { get; private set; }
 
     // See if we can't make a rangefinder that doesn't need this.
-    public int pathCost = 99;
     
     public Unit unitOn;
-    private Map mapOn;
+    private BattleMap mapOn;
     private TileBase tileBase;
+
+    public int pathCost = 99;
+
+    // See if we can't make a move function that doesn't need this
+    public enum SquareState {
+        disabled,
+        enabled,
+        attack,
+        heal,
+    }
+    public SquareState squareState;
 
     void Start()
     {
@@ -29,20 +39,23 @@ public class Square : MonoBehaviour
     
     public void ShowTile()
     {
-        spriteRenderer.color = new Color(1,1,1,1f);
+        spriteRenderer.color = new Color(0.5f,0.7f,1f,0.9f);
+        squareState = SquareState.enabled;
     }
 
     public void ShowAtkTile()
     {
-        spriteRenderer.color = new Color(1f,0f,0f,1f);
+        spriteRenderer.color = new Color(1f,0f,0f,0.9f);
+        squareState = SquareState.attack;
     }
 
     public void HideTile()
     {
         spriteRenderer.color = new Color(1,1,1,0);
+        squareState = SquareState.disabled;
     }
 
-    public void TieToMap(Map map, Vector2Int pos, TileBase tb)
+    public void TieToMap(BattleMap map, Vector2Int pos, TileBase tb)
     {
         // I think this dependency is fine, you need a map to have tiles after all.
         mapOn = map;
