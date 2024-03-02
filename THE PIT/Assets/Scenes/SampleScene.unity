@@ -391,7 +391,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 882741844}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.5, y: -3.5, z: 0}
+  m_LocalPosition: {x: -3.01, y: 1.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2439,11 +2439,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1257278385}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9beb9f0fbd20ce48a7bceb059f065a4, type: 3}
+  m_Script: {fileID: 11500000, guid: acce51b68f2beeb45a23e2c12a8f5a6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overSqaurePrefab: {fileID: 5084123320855295382, guid: 1fc7ea55fb40ebd45a15c4c63df24b50, type: 3}
+  overSqaurePrefab: {fileID: 0}
   overSquareContainer: {fileID: 785355512}
+  rangeCache: []
 --- !u!1 &1298188403
 GameObject:
   m_ObjectHideFlags: 0
