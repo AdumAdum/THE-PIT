@@ -18,19 +18,17 @@ public class Unit : MonoBehaviour
         GameEvents.Instance.UnitChangePosition(this, coords);
     }
 
-    private void Update()
-    {
-        if (moving) { MoveAlongPath(); }
-    }
-
-    public Vector2Int GetCoords()
-    {
-        return coords;
-    }
+    public Vector2Int GetCoords(){ return coords; }
+    public void SetCoords(Vector2Int newCoords) { coords = newCoords; }
 
     public string GetTeam()
     {
         return GetComponentInParent<GameObject>().name;
+    }
+
+    private void Update()
+    {
+        if (moving) MoveAlongPath();
     }
 
     public void StartMove(List<Square> sqs)
@@ -47,7 +45,7 @@ public class Unit : MonoBehaviour
             return; 
         }
 
-        var step = Settings.Instance.gameSpd * Time.deltaTime;
+        float step = 10f * Time.deltaTime;
 
         transform.position = Vector2.MoveTowards(transform.position, path[0].transform.position, step);
 
@@ -60,6 +58,7 @@ public class Unit : MonoBehaviour
 
     private void EndPathFinding()
     {
-
+        moving = false;
+        //GameEvents.Instance.UnitChangePosition(this, coords);
     }
 }

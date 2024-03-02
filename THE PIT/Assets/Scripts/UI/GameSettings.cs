@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Settings : MonoBehaviour
+public class GameSettings : MonoBehaviour
 {
-    private static Settings _instance;
-    public static Settings Instance { get { return _instance; } }
+    private static GameSettings _instance;
+    public static GameSettings Instance { get { return _instance; } }
 
     public float gameSpd = 10f;
 

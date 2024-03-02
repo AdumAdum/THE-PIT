@@ -22,7 +22,7 @@ public class BattleMap : MonoBehaviour
 
         // Cursor
         GameEvents.Instance.onNewUnitClicked += GetUnitRange;
-        GameEvents.Instance.onUnitDeselected += HideUnitRange;
+        GameEvents.Instance.onUnitDeselected += Cancel;
         GameEvents.Instance.onUnitMoveRequest += MoveUnit;
     }
 
@@ -60,7 +60,9 @@ public class BattleMap : MonoBehaviour
         Vector2Int start = (Vector2Int) currentPosition;
         Vector2Int end = (Vector2Int) finalPosition;
 
-
+        if (sqArray[end.x,end.y].squareState != Square.SquareState.enabled) return;
+        // DEPENDENCY ALERT ???
+        sqArray[start.x,start.y].unitOn.StartMove(rangeAndPath.FindPath(sqArray, rangeCache, start, end));
     }
 
     private void UpdateUnitPosition(Component sender, object data)
@@ -73,21 +75,26 @@ public class BattleMap : MonoBehaviour
         // Quickest way I found online to check if an array index is in bounds.
         if (coords.x < 0 || coords.x >= sqArray.Length || coords.y < 0 || coords.y >= sqArray.Length) return;
 
-        // Move unit and tell the square it has a dude on it
+        // Move unit and tell the square it has a dude on it, unit's coords
         unit.gameObject.transform.position = sqArray[coords.x,coords.y].transform.position;
+        unit.SetCoords(coords);
         sqArray[coords.x,coords.y].unitOn = unit;
     }
 
-    public void HideUnitRange(Component sender)
+    private void Cancel(Component sender)
     {
         if (sender is not Cursor) return;
+        HideUnitRange();
+    }
 
+    private void HideUnitRange()
+    {
         foreach (var sq in rangeCache) sq.HideTile();
     }
 
-    private void GetUnitRange(Component sender, object data)
+    private void GetUnitRange(object data)
     {
-        if (sender is not Cursor || data is not Vector2Int) return;
+        if (data is not Vector2Int) return;
 
         Vector2Int pos = (Vector2Int) data;
 

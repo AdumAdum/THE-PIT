@@ -48,6 +48,58 @@ public class RangeAndPath
         return inRangeTiles.Distinct().ToList();
     }
 
+    // =============
+    // PATH FINDING
+    // =============
+    public List<Square> FindPath(Square[,] map, List<Square> inRangeSqs, Vector2Int start, Vector2Int end)
+    {
+        var frontier = new List<Square>();
+        var explored = new List<Square>();
+
+        frontier.Add(map[start.x,start.y]);
+
+        while (frontier.Any())
+        {
+            Square sq = frontier.OrderBy(x => x.terrain["cost"]).First();
+
+            frontier.Remove(sq);
+            explored.Add(sq);
+
+            if (sq.coords == end) { return GetFinishedList(map, start, end); }
+
+            foreach (var neighbor in GetAdjSquares(map, sq.coords))
+            {
+                if (explored.Contains(neighbor) || !inRangeSqs.Contains(neighbor)) continue;
+
+                neighbor.prev = sq.coords;
+            
+                if (!frontier.Contains(neighbor))
+                {
+                    frontier.Add(neighbor);
+                }
+            }
+        }
+        return null;
+    }
+
+    private List<Square> GetFinishedList(Square[,] map, Vector2Int start, Vector2Int end)
+    {
+        List<Square> finalList = new List<Square>();
+        Vector2Int vect = end;
+        while (vect != start)
+        {
+            finalList.Add(map[vect.x,vect.y]);
+            vect = map[vect.x,vect.y].prev;
+        }
+        finalList.Reverse();
+        return finalList;
+    }
+
+    private int GetManhattanDistance(Vector2Int posA, Vector2Int posB)
+    {
+        return Mathf.Abs(posA.x - posB.x) + Mathf.Abs(posA.y - posB.y);
+    }
+
     public List<Square> GetAdjSquares(Square[,] sqArray, Vector2Int pos)
     {
         List<Square> adjSquares = new List<Square>();

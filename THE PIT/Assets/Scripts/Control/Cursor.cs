@@ -53,7 +53,7 @@ public class Cursor : MonoBehaviour
                 if (sq.unitOn == null) return;
                 
                 selectedUnit = sq.unitOn;
-                GameEvents.Instance.NewUnitClicked(this, sq.coords);
+                GameEvents.Instance.NewUnitClicked(sq.coords);
                 
                 cursorState = CursorState.unitSelected;
                 break;
@@ -61,7 +61,7 @@ public class Cursor : MonoBehaviour
             case CursorState.unitSelected:
                 if (sq.squareState != Square.SquareState.enabled) return;
 
-                //GameEvents.Instance.UnitMoveRequest(this, selectedUnit.GetCoords(), sq.coords);
+                GameEvents.Instance.UnitMoveRequest(this, selectedUnit.GetCoords(), sq.coords);
                 break;
 
             case CursorState.unitMoved:

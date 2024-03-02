@@ -27,10 +27,10 @@ public class GameEvents : MonoBehaviour
     }
 
     // Cursor->Map
-    public event Action<Component, object> onNewUnitClicked;
-    public void NewUnitClicked(Component component, object data)
+    public event Action<object> onNewUnitClicked;
+    public void NewUnitClicked(object data)
     {
-        if (onNewUnitClicked != null) onNewUnitClicked(component, data);
+        if (onNewUnitClicked != null) onNewUnitClicked(data);
     }
 
     public event Action<Component> onUnitDeselected;
