@@ -16,6 +16,7 @@ public class Unit : MonoBehaviour
     private void Start()
     {
         GameEvents.Instance.UnitChangePosition(this, coords);
+        stats = new Dictionary<string, int>{ {"mov", 3} };
     }
 
     private void Update()

@@ -11,7 +11,7 @@ public class Square : MonoBehaviour
     public Dictionary<string, int> terrain { get; private set; }
     
     public Unit unitOn;
-    private BattleMap mapOn;
+    private Map mapOn;
     private TileBase tileBase;
 
     // See if we can't make a rangefinder/pathfinder that doesn't need this.
@@ -39,23 +39,20 @@ public class Square : MonoBehaviour
     
     public void ShowTile()
     {
-        spriteRenderer.color = new Color(0.5f,0.7f,1f,0.9f);
-        squareState = SquareState.enabled;
+        spriteRenderer.color = new Color(1,1,1,1f);
     }
 
     public void ShowAtkTile()
     {
-        spriteRenderer.color = new Color(1f,0f,0f,0.9f);
-        squareState = SquareState.attack;
+        spriteRenderer.color = new Color(1f,0f,0f,1f);
     }
 
     public void HideTile()
     {
         spriteRenderer.color = new Color(1,1,1,0);
-        squareState = SquareState.disabled;
     }
 
-    public void TieToMap(BattleMap map, Vector2Int pos, TileBase tb)
+    public void TieToMap(Map map, Vector2Int pos, TileBase tb)
     {
         // I think this dependency is fine, you need a map to have tiles after all.
         mapOn = map;

@@ -62,6 +62,7 @@ public class Cursor : MonoBehaviour
                 if (sq.squareState != Square.SquareState.enabled) return;
 
                 //GameEvents.Instance.UnitMoveRequest(this, selectedUnit.GetCoords(), sq.coords);
+                // Run Map(?)'s unit move function, if returns -1 (failure), just stay in current state
                 break;
 
             case CursorState.unitMoved:
@@ -76,7 +77,7 @@ public class Cursor : MonoBehaviour
             default:
                 break;
         }
-        //Debug.Log($"{cursorState}, {selectedUnit}, {sq.terrain["cost"]}");
+        Debug.Log($"{cursorState}, {selectedUnit}, {sq.terrain["cost"]}");
     }
 
     // Right click / X / num2
@@ -108,7 +109,7 @@ public class Cursor : MonoBehaviour
             default:
                 break;
         }
-        //Debug.Log($"{cursorState}, {selectedUnit}");
+        Debug.Log($"{cursorState}, {selectedUnit}");
     }
 
     Square GetCurrentSquare()
@@ -147,7 +148,6 @@ public class Cursor : MonoBehaviour
         playerControls.Disable();
         move.Disable();
         interact.Disable();
-        cancel.Disable();
     }
 
 }

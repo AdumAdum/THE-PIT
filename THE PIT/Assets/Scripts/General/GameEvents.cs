@@ -38,10 +38,4 @@ public class GameEvents : MonoBehaviour
     {
         if (onUnitDeselected != null) onUnitDeselected(component);
     }
-
-    public event Action<Component, object, object> onUnitMoveRequest;
-    public void UnitMoveRequest(Component component, object currentPosition, object finalPosition)
-    {
-        if (onUnitMoveRequest != null) onUnitMoveRequest(component, currentPosition, finalPosition);
-    }
 }
