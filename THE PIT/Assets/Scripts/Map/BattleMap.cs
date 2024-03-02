@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-using System.Linq;
 using UnityEngine.Tilemaps;
 
 public class BattleMap : MonoBehaviour
@@ -57,10 +55,12 @@ public class BattleMap : MonoBehaviour
     {
         if (sender is not Cursor || currentPosition is not Vector2Int || finalPosition is not Vector2Int) return;
 
+        Debug.Log("Made it to MoveUnit");
         Vector2Int start = (Vector2Int) currentPosition;
         Vector2Int end = (Vector2Int) finalPosition;
 
-
+        // Generate path from currentPosition to finalPosition, send it to the unit so he'll move there
+        rangeAndPath.FindPath(sqArray, start, end);
     }
 
     private void UpdateUnitPosition(Component sender, object data)

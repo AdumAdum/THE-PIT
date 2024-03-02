@@ -415,7 +415,6 @@ MonoBehaviour:
     keys:
     - mov
     values: 0a000000
-  team: 
 --- !u!1 &991025041
 GameObject:
   m_ObjectHideFlags: 0
