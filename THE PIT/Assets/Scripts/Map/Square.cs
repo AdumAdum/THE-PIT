@@ -9,14 +9,14 @@ public class Square : MonoBehaviour
 
     public Vector2Int coords { get; private set; }
     public Dictionary<string, int> terrain { get; private set; }
+
+    // See if we can't make a rangefinder that doesn't need this.
     
     public Unit unitOn;
     private Map mapOn;
     private TileBase tileBase;
 
-    // See if we can't make a rangefinder/pathfinder that doesn't need this.
     public int pathCost = 99;
-    public Vector2Int prev;
 
     // See if we can't make a move function that doesn't need this
     public enum SquareState {
