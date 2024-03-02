@@ -6,18 +6,16 @@ public class Unit : MonoBehaviour
 {
     [SerializeField] Vector2Int coords;
     public Dictionary<string, int> stats;
+    public string team;
 
-    [Header("Events")]
-    public GameEvent UnitPositionUpdate;
-
-    void Start()
+    private void Start()
     {
-        PositionUpdate(coords);
+        GameEvents.Instance.UnitChangePosition(this, coords);
+        stats = new Dictionary<string, int>{ {"mov", 3} };
     }
 
-    void PositionUpdate(Vector2Int position)
+    public string GetTeam()
     {
-        UnitPositionUpdate.Raise(this, position);
-        coords = position;
+        return GetComponentInParent<Transform>().name;
     }
 }

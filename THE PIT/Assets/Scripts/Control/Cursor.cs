@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class Cursor : MonoBehaviour
 {
-    public PlayerInputActions playerControls;
+    private PlayerInputActions playerControls;
     private InputAction move;
     private InputAction interact;
     private InputAction cancel;
@@ -41,6 +41,7 @@ public class Cursor : MonoBehaviour
         if (sq is not null) { transform.position = sq.gameObject.transform.position; }
     }
 
+    // Left click / z / num6
     private void Interact(InputAction.CallbackContext context)
     {
         Square sq = GetCurrentSquare();
@@ -50,8 +51,9 @@ public class Cursor : MonoBehaviour
         {
             case CursorState.free:
                 if (sq.unitOn == null) return;
+                
                 selectedUnit = sq.unitOn;
-                // Tell someone Map(?) to run a range check on the unit
+                GameEvents.Instance.NewUnitClicked(this, sq.coords);
                 
                 cursorState = CursorState.unitSelected;
                 break;
@@ -72,9 +74,10 @@ public class Cursor : MonoBehaviour
             default:
                 break;
         }
-        Debug.Log($"{cursorState}, {selectedUnit}, {sq.terrainBonuses["cost"]}");
+        Debug.Log($"{cursorState}, {selectedUnit}, {sq.terrain["cost"]}");
     }
 
+    // Right click / X / num2
     private void Cancel(InputAction.CallbackContext context)
     {
         switch (cursorState)
@@ -84,6 +87,8 @@ public class Cursor : MonoBehaviour
             
             case CursorState.unitSelected:
                 selectedUnit = null;
+                GameEvents.Instance.UnitDeselected(this);
+
                 cursorState = CursorState.free;
                 break;
 
@@ -119,8 +124,6 @@ public class Cursor : MonoBehaviour
         }
         return null;
     }
-
-
 
     void OnEnable()
     {
