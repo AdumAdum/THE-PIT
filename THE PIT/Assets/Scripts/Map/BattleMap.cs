@@ -18,12 +18,12 @@ public class BattleMap : MonoBehaviour
     private void EventSubscription()
     {
         // Unit
-        GameEvents.Instance.onUnitChangePosition += UpdateUnitPosition;
+        VagueGameEvent.Instance.onUnitChangePosition += UpdateUnitPosition;
 
         // Cursor
-        GameEvents.Instance.onNewUnitClicked += GetUnitRange;
-        GameEvents.Instance.onUnitDeselected += Cancel;
-        GameEvents.Instance.onUnitMoveRequest += MoveUnit;
+        VagueGameEvent.Instance.onNewUnitClicked += GetUnitRange;
+        VagueGameEvent.Instance.onUnitDeselected += Cancel;
+        VagueGameEvent.Instance.onUnitMoveRequest += MoveUnit;
     }
 
     // Get all tiles put in a 2d array according to their position

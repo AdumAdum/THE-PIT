@@ -5,11 +5,11 @@ using UnityEngine;
 public class Health
 {
     private int startingHealth;
-    public int currentHealth;
+    private int currentHealth;
 
-    public Health(int startingHealth)
+    public Health(int hp)
     {
-        this.startingHealth = startingHealth;
+        this.startingHealth = hp;
         Reset();
     }
 

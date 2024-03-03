@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameEvents : MonoBehaviour
+public class VagueGameEvent : MonoBehaviour
 {
-    private static GameEvents _instance;
-    public static GameEvents Instance { get { return _instance; } }
+    private static VagueGameEvent _instance;
+    public static VagueGameEvent Instance { get { return _instance; } }
 
     private void Awake()
     {

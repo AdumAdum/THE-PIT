@@ -15,7 +15,7 @@ public class Unit : MonoBehaviour
 
     private void Start()
     {
-        GameEvents.Instance.UnitChangePosition(this, coords);
+        VagueGameEvent.Instance.UnitChangePosition(this, coords);
     }
 
     public Vector2Int GetCoords(){ return coords; }
@@ -51,7 +51,7 @@ public class Unit : MonoBehaviour
 
         if (Vector2.Distance(transform.position, path[0].transform.position) < 0.001f)
         {
-            GameEvents.Instance.UnitChangePosition(this, path[0].coords);
+            VagueGameEvent.Instance.UnitChangePosition(this, path[0].coords);
             path.RemoveAt(0);
         }
     }

@@ -11,7 +11,10 @@ public class CUISlider : CustomUIComponent
     public Image backgroundImage;
     public Image fillImage;
 
-    public override void Setup() { }
+    public override void Setup() 
+    { 
+        
+    }
 
     public override void Configure()
     {
