@@ -21,27 +21,27 @@ public class GameEvents : MonoBehaviour
 
     // Unit->Map
     public event Action<Component, object> onUnitChangePosition;
-    public void UnitChangePosition(Component component, object data) 
+    public void UnitChangePosition(Component sender, object data) 
     {
-        if (onUnitChangePosition != null) onUnitChangePosition(component, data);
+        onUnitChangePosition?.Invoke(sender, data);
     }
 
     // Cursor->Map
     public event Action<object> onNewUnitClicked;
     public void NewUnitClicked(object data)
     {
-        if (onNewUnitClicked != null) onNewUnitClicked(data);
+        onNewUnitClicked?.Invoke(data);
     }
 
     public event Action<Component> onUnitDeselected;
-    public void UnitDeselected(Component component)
+    public void UnitDeselected(Component sender)
     {
-        if (onUnitDeselected != null) onUnitDeselected(component);
+        onUnitDeselected?.Invoke(sender);
     }
 
     public event Action<Component, object, object> onUnitMoveRequest;
-    public void UnitMoveRequest(Component component, object currentPosition, object finalPosition)
+    public void UnitMoveRequest(Component sender, object currentPosition, object finalPosition)
     {
-        if (onUnitMoveRequest != null) onUnitMoveRequest(component, currentPosition, finalPosition);
+        onUnitMoveRequest?.Invoke(sender, currentPosition, finalPosition);
     }
 }
