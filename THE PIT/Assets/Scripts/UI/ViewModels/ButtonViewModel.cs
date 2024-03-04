@@ -11,8 +11,8 @@ public class ButtonViewModel : MonoBehaviour
 
     // When not testing, other things (he says models) will send data to viewmodel to invoke events
     // This is just for example purposes
-    [Header("Event Data")]
-    public int value;
+    //[Header("Event Data")]
+    //public int value;
 
     private void OnEnable()
     {
@@ -26,6 +26,6 @@ public class ButtonViewModel : MonoBehaviour
 
     public void OnClick()
     {
-        onClick.Raise(this, value);
+        onClick.Raise(this);
     }
 }

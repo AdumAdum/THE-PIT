@@ -6,6 +6,9 @@ public class ActionMenu : MonoBehaviour
 {
     private CanvasGroup canvasGroup;
 
+    private Unit subjectUnit;
+    //private Unit targetUnit;
+
     [Header("Events")]
     public SpecificGameEvent onUnitCall;
 
@@ -20,6 +23,13 @@ public class ActionMenu : MonoBehaviour
         EventSubscription();
         canvasGroup = GetComponent<CanvasGroup>();
         DisableCanvasGroup();
+    }
+
+    public void WaitButtonPress()
+    {
+        VagueGameEvent.Instance.WaitButtonPress(this, subjectUnit);
+        VagueGameEvent.Instance.ActionMenuCloseRequest();
+        VagueGameEvent.Instance.UnitDeselected();
     }
 
     private void UnitOpenActionMenu(object data)
@@ -39,8 +49,8 @@ public class ActionMenu : MonoBehaviour
 
     public void OnUnitCall(Unit unit)
     {
-        Debug.Log($"Raising onUnitCall");
-        onUnitCall.Raise(this, unit.name);
+        subjectUnit = unit;
+        onUnitCall.Raise(this, subjectUnit);
     }
 
     private void EnableCanvasGroup()

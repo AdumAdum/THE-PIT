@@ -5,25 +5,49 @@ using System.Linq;
 
 public class Unit : MonoBehaviour
 {
+    [Header("Positioning")]
     [SerializeField] Vector2Int coords;
+    private List<Square> path;
+    private Vector2Int posCache;
+
+    [Header("Battle Info")]
     public UDictionary<string, int> stats;
     public string team { get; private set; }
 
-    // Movement
-    public bool moving { get; private set;}
-    private List<Square> path;
+    private SpriteRenderer spriteRenderer;
 
+    public enum UnitState
+    {
+        free,
+        moving,
+        done
+    }
+    public UnitState unitState = UnitState.free;
+
+    // ============== //
+    // INITIALIZATION //
+    // ============== //
     private void EventSubscription()
     {
         VagueGameEvent.Instance.onCancelMove += PrematureMoveCancel;
+        VagueGameEvent.Instance.onWaitButtonPressed += Wait;
+    }
+
+    private void GetComponents()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Start()
     {
+        GetComponents();
         EventSubscription();
         VagueGameEvent.Instance.UnitChangePosition(this, coords);
     }
 
+    // =================== //
+    // GETTERS AND SETTERS //
+    // =================== //
     public Vector2Int GetCoords(){ return coords; }
     public void SetCoords(Vector2Int newCoords) { coords = newCoords; }
 
@@ -32,16 +56,19 @@ public class Unit : MonoBehaviour
         return GetComponentInParent<GameObject>().name;
     }
 
-    private void Update()
-    {
-        if (moving) MoveAlongPath();
-    }
-
+    // ======== //
+    // MOVEMENT //
+    // ======== //
     public void StartMove(List<Square> sqs)
     {
         VagueGameEvent.Instance.ActionMenuCloseRequest();
         path = sqs;
-        moving = true;
+        unitState = UnitState.moving;
+    }
+    
+    private void Update()
+    {
+        if (unitState == UnitState.moving) MoveAlongPath();
     }
 
     private void MoveAlongPath()
@@ -58,13 +85,14 @@ public class Unit : MonoBehaviour
 
         if (Vector2.Distance(transform.position, path[0].transform.position) < 0.001f)
         {
+            posCache = path[0].coords;
             path.RemoveAt(0);
         }
     }
 
     private void EndMovement()
     {
-        moving = false;
+        unitState = UnitState.free;
         VagueGameEvent.Instance.ActionMenuOpenRequest(this);
     }
 
@@ -76,5 +104,25 @@ public class Unit : MonoBehaviour
         if (!ReferenceEquals(this, unit)) return;
 
         EndMovement();
+    }
+
+    // ======= //
+    // ACTIONS //
+    // ======= //
+    private void Wait(Component sender, object data)
+    {
+        if (sender is not ActionMenu || data is not Unit) return;
+
+        Unit unit = (Unit) data;
+        if (!ReferenceEquals(this, unit)) return;
+
+        UnitDone();
+    }
+
+    private void UnitDone()
+    {
+        unitState = UnitState.done;
+        spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f, 1f);
+        VagueGameEvent.Instance.UnitChangePosition(this, posCache);
     }
 }

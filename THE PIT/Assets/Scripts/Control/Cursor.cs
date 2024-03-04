@@ -32,6 +32,16 @@ public class Cursor : MonoBehaviour
         playerControls = new PlayerInputActions();
     }
 
+    void EventSubscription()
+    {
+        VagueGameEvent.Instance.onUnitDeselected += CleanCursor;
+    }
+
+    void Start()
+    {
+        EventSubscription();
+    }
+
     void Update()
     {
         CenterCursor();
@@ -41,6 +51,13 @@ public class Cursor : MonoBehaviour
     {
         Square sq = GetCurrentSquare();
         if (sq is not null) { transform.position = sq.gameObject.transform.position; }
+    }
+
+    void CleanCursor()
+    {
+        cursorState = CursorState.free;
+        selectedUnit = null;
+        fluxPos = new Vector2Int();
     }
 
     // Left click / z / num6
@@ -56,7 +73,7 @@ public class Cursor : MonoBehaviour
         switch (cursorState)
         {
             case CursorState.free:
-                if (sq.unitOn == null) return;
+                if (sq.unitOn == null || sq.unitOn.unitState != Unit.UnitState.free) return;
                 
                 selectedUnit = sq.unitOn;
                 VagueGameEvent.Instance.NewUnitClicked(sq.coords);
@@ -111,9 +128,8 @@ public class Cursor : MonoBehaviour
                 break;
             
             case CursorState.unitSelected:
-                selectedUnit = null;
-                fluxPos = new Vector2Int();
-                VagueGameEvent.Instance.UnitDeselected(this);
+                CleanCursor();
+                VagueGameEvent.Instance.UnitDeselected();
                 VagueGameEvent.Instance.ActionMenuCloseRequest();
 
                 cursorState = CursorState.free;
@@ -141,7 +157,7 @@ public class Cursor : MonoBehaviour
     private bool ShouldLock()
     {
         if (selectedUnit == null) return false;
-        else if (selectedUnit.moving) return true;
+        else if (selectedUnit.unitState == Unit.UnitState.moving) return true;
         else return false;
     }
 
@@ -191,5 +207,4 @@ public class Cursor : MonoBehaviour
         interact.Disable();
         cancel.Disable();
     }
-
 }

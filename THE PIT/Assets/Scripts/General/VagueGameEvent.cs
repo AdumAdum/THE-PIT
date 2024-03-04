@@ -19,6 +19,21 @@ public class VagueGameEvent : MonoBehaviour
 
     // X->Y isn't all events can do. I want to send this to multiple different scripts I can easily. Hooray!
 
+    // ActionMenu->Unit & ActionMenu->Map
+    public event Action<Component, object> onWaitButtonPressed;
+    public void WaitButtonPress(Component sender, object data)
+    {
+        Debug.Log("Wait!");
+        onWaitButtonPressed?.Invoke(sender, data);
+    }
+
+    // Cursor->Unit
+    public event Action<Component, object> onCancelMove;
+    public void CancelMove(Component sender, object data)
+    {
+        onCancelMove?.Invoke(sender, data);
+    }
+
     // Unit->Map
     public event Action<Component, object> onUnitChangePosition;
     public void UnitChangePosition(Component sender, object data) 
@@ -26,18 +41,18 @@ public class VagueGameEvent : MonoBehaviour
         onUnitChangePosition?.Invoke(sender, data);
     }
 
-    // X->ActionMenu
+    // x->ActionMenu
     public event Action<object> onActionMenuOpenRequest;
     public void ActionMenuOpenRequest(object data)
     {
         onActionMenuOpenRequest?.Invoke(data);
     }
+
     public event Action onActionMenuCloseRequest;
     public void ActionMenuCloseRequest()
     {
         onActionMenuCloseRequest?.Invoke();
     }
-
 
     // Cursor->Map
     public event Action<object> onNewUnitClicked;
@@ -46,10 +61,10 @@ public class VagueGameEvent : MonoBehaviour
         onNewUnitClicked?.Invoke(data);
     }
 
-    public event Action<Component> onUnitDeselected;
-    public void UnitDeselected(Component sender)
+    public event Action onUnitDeselected; // + ActionMenu -> Cursor
+    public void UnitDeselected()
     {
-        onUnitDeselected?.Invoke(sender);
+        onUnitDeselected?.Invoke();
     }
 
     public event Action<Component, object, object, object> onUnitMoveRequest;
@@ -58,10 +73,5 @@ public class VagueGameEvent : MonoBehaviour
         onUnitMoveRequest?.Invoke(sender, unit, currentPosition, finalPosition);
     }
     
-    // Cursor->Unit
-    public event Action<Component, object> onCancelMove;
-    public void CancelMove(Component sender, object data)
-    {
-        onCancelMove?.Invoke(sender, data);
-    }
+
 }

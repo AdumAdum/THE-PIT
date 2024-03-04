@@ -17,13 +17,13 @@ public class BattleMap : MonoBehaviour
 
     private void EventSubscription()
     {
-        // Unit
-        VagueGameEvent.Instance.onUnitChangePosition += UpdateUnitPosition;
-
         // Cursor
         VagueGameEvent.Instance.onNewUnitClicked += GetUnitRange;
         VagueGameEvent.Instance.onUnitDeselected += Cancel;
         VagueGameEvent.Instance.onUnitMoveRequest += MoveUnit;
+
+        // Unit
+        VagueGameEvent.Instance.onUnitChangePosition += UpdateUnitPosition;
     }
 
     // Get all tiles put in a 2d array according to their position
@@ -74,15 +74,17 @@ public class BattleMap : MonoBehaviour
         // Quickest way I found online to check if an array index is in bounds.
         if (coords.x < 0 || coords.x >= sqArray.Length || coords.y < 0 || coords.y >= sqArray.Length) return;
 
+        // Clean up previous square
+        sqArray[unit.GetCoords().x, unit.GetCoords().y].SetUnitOn(null);
+
         // Move unit and tell the square it has a dude on it, unit's coords
         unit.gameObject.transform.position = sqArray[coords.x,coords.y].transform.position;
         unit.SetCoords(coords);
         sqArray[coords.x,coords.y].SetUnitOn(unit);
     }
 
-    private void Cancel(Component sender)
+    private void Cancel()
     {
-        if (sender is not Cursor) return;
         HideUnitRange();
     }
 
