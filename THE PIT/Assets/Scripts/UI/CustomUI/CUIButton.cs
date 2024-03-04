@@ -31,6 +31,6 @@ public class CUIButton : CustomUIComponent
 
     public void OnClick()
     {
-        onClick.Invoke();
+        onClick?.Invoke();
     }
 }

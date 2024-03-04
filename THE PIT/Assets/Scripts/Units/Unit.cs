@@ -10,11 +10,17 @@ public class Unit : MonoBehaviour
     public string team { get; private set; }
 
     // Movement
-    private bool moving = false;
+    public bool moving { get; private set;}
     private List<Square> path;
+
+    private void EventSubscription()
+    {
+        VagueGameEvent.Instance.onCancelMove += PrematureMoveCancel;
+    }
 
     private void Start()
     {
+        EventSubscription();
         VagueGameEvent.Instance.UnitChangePosition(this, coords);
     }
 
@@ -33,6 +39,7 @@ public class Unit : MonoBehaviour
 
     public void StartMove(List<Square> sqs)
     {
+        VagueGameEvent.Instance.ActionMenuCloseRequest();
         path = sqs;
         moving = true;
     }
@@ -41,7 +48,7 @@ public class Unit : MonoBehaviour
     {
         if (!path.Any()) 
         { 
-            EndPathFinding();
+            EndMovement();
             return; 
         }
 
@@ -51,14 +58,23 @@ public class Unit : MonoBehaviour
 
         if (Vector2.Distance(transform.position, path[0].transform.position) < 0.001f)
         {
-            VagueGameEvent.Instance.UnitChangePosition(this, path[0].coords);
             path.RemoveAt(0);
         }
     }
 
-    private void EndPathFinding()
+    private void EndMovement()
     {
         moving = false;
-        //GameEvents.Instance.UnitChangePosition(this, coords);
+        VagueGameEvent.Instance.ActionMenuOpenRequest(this);
+    }
+
+    private void PrematureMoveCancel(Component sender, object data)
+    {
+        if (sender is not Cursor || data is not Unit) return;
+        
+        Unit unit = (Unit) data;
+        if (!ReferenceEquals(this, unit)) return;
+
+        EndMovement();
     }
 }

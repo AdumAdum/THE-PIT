@@ -10,7 +10,7 @@ public class Square : MonoBehaviour
     public Vector2Int coords { get; private set; }
     public Dictionary<string, int> terrain { get; private set; }
     
-    public Unit unitOn;
+    public Unit unitOn { get; private set; }
     private BattleMap mapOn;
     private TileBase tileBase;
 
@@ -62,6 +62,9 @@ public class Square : MonoBehaviour
         coords = pos;
         tileBase = tb;
     }
+
+    public Unit GetUnitOn() { return unitOn; }
+    public void SetUnitOn(Unit unit) { unitOn = unit;} 
 
     private void TerrainSetup()
     {

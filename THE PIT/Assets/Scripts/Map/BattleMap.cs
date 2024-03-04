@@ -53,16 +53,15 @@ public class BattleMap : MonoBehaviour
         }
     }
 
-    private void MoveUnit(Component sender, object currentPosition, object finalPosition)
+    private void MoveUnit(Component sender, object unit, object currentPosition, object finalPosition)
     {
         if (sender is not Cursor || currentPosition is not Vector2Int || finalPosition is not Vector2Int) return;
 
+        Unit unitToMove = (Unit) unit;
         Vector2Int start = (Vector2Int) currentPosition;
         Vector2Int end = (Vector2Int) finalPosition;
 
-        if (sqArray[end.x,end.y].squareState != Square.SquareState.enabled) return;
-        // DEPENDENCY ALERT ???
-        sqArray[start.x,start.y].unitOn.StartMove(rangeAndPath.FindPath(sqArray, rangeCache, start, end));
+        unitToMove.StartMove(rangeAndPath.FindPath(sqArray, rangeCache, start, end));
     }
 
     private void UpdateUnitPosition(Component sender, object data)
@@ -78,7 +77,7 @@ public class BattleMap : MonoBehaviour
         // Move unit and tell the square it has a dude on it, unit's coords
         unit.gameObject.transform.position = sqArray[coords.x,coords.y].transform.position;
         unit.SetCoords(coords);
-        sqArray[coords.x,coords.y].unitOn = unit;
+        sqArray[coords.x,coords.y].SetUnitOn(unit);
     }
 
     private void Cancel(Component sender)

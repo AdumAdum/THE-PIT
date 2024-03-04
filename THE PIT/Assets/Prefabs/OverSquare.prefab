@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 83d1a75c5ee14d04a9268a8bd4a92560, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -124,4 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a3d8e7f048bcdb48a81025bf68df924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coords: {x: 0, y: 0}
+  unitOn: {fileID: 0}
+  pathCost: 99
+  prev: {x: 0, y: 0}
+  squareState: 0

@@ -26,6 +26,19 @@ public class VagueGameEvent : MonoBehaviour
         onUnitChangePosition?.Invoke(sender, data);
     }
 
+    // X->ActionMenu
+    public event Action<object> onActionMenuOpenRequest;
+    public void ActionMenuOpenRequest(object data)
+    {
+        onActionMenuOpenRequest?.Invoke(data);
+    }
+    public event Action onActionMenuCloseRequest;
+    public void ActionMenuCloseRequest()
+    {
+        onActionMenuCloseRequest?.Invoke();
+    }
+
+
     // Cursor->Map
     public event Action<object> onNewUnitClicked;
     public void NewUnitClicked(object data)
@@ -39,9 +52,16 @@ public class VagueGameEvent : MonoBehaviour
         onUnitDeselected?.Invoke(sender);
     }
 
-    public event Action<Component, object, object> onUnitMoveRequest;
-    public void UnitMoveRequest(Component sender, object currentPosition, object finalPosition)
+    public event Action<Component, object, object, object> onUnitMoveRequest;
+    public void UnitMoveRequest(Component sender, object unit, object currentPosition, object finalPosition)
     {
-        onUnitMoveRequest?.Invoke(sender, currentPosition, finalPosition);
+        onUnitMoveRequest?.Invoke(sender, unit, currentPosition, finalPosition);
+    }
+    
+    // Cursor->Unit
+    public event Action<Component, object> onCancelMove;
+    public void CancelMove(Component sender, object data)
+    {
+        onCancelMove?.Invoke(sender, data);
     }
 }

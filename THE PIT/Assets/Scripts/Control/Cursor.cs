@@ -14,11 +14,13 @@ public class Cursor : MonoBehaviour
     private Square selectedSquare;
     private Unit selectedUnit;
     private Unit targetedUnit;
+    private Vector2Int fluxPos;
 
     private enum CursorState
     {
         free,
         unitSelected,
+        locked,
         unitMoved,
         attackCursor,
         healCursor
@@ -46,7 +48,11 @@ public class Cursor : MonoBehaviour
     {
         Square sq = GetCurrentSquare();
         if (sq == null) { return; }
+        
+        bool locked = ShouldLock();
+        if (locked) { cursorState = CursorState.locked; }
 
+        retry: 
         switch (cursorState)
         {
             case CursorState.free:
@@ -54,17 +60,34 @@ public class Cursor : MonoBehaviour
                 
                 selectedUnit = sq.unitOn;
                 VagueGameEvent.Instance.NewUnitClicked(sq.coords);
+                VagueGameEvent.Instance.ActionMenuOpenRequest(selectedUnit);
                 
                 cursorState = CursorState.unitSelected;
                 break;
             
             case CursorState.unitSelected:
-                if (sq.squareState != Square.SquareState.enabled) return;
+                if (!ValidMovTarget(sq)) return;
+                VagueGameEvent.Instance.UnitMoveRequest(this, selectedUnit, selectedUnit.GetCoords(), sq.coords);
+                fluxPos = sq.coords;
 
-                VagueGameEvent.Instance.UnitMoveRequest(this, selectedUnit.GetCoords(), sq.coords);
+                cursorState = CursorState.unitMoved;
+                break;
+
+            case CursorState.locked:
+                // Unique. Can exhibit different behavior depending on if you were just locked or are being unlocked
+                if (!locked) 
+                {
+                    cursorState = CursorState.unitMoved;
+                    VagueGameEvent.Instance.ActionMenuOpenRequest(selectedUnit);
+                    goto retry;
+                }
                 break;
 
             case CursorState.unitMoved:
+                if (!ValidMovTarget(sq)) return;
+                VagueGameEvent.Instance.UnitMoveRequest(this, selectedUnit, fluxPos, sq.coords);
+                fluxPos = sq.coords;
+
                 break;
 
             case CursorState.attackCursor:
@@ -76,7 +99,7 @@ public class Cursor : MonoBehaviour
             default:
                 break;
         }
-        //Debug.Log($"{cursorState}, {selectedUnit}, {sq.terrain["cost"]}");
+        //Debug.Log($"{cursorState}, {selectedUnit}");
     }
 
     // Right click / X / num2
@@ -89,13 +112,17 @@ public class Cursor : MonoBehaviour
             
             case CursorState.unitSelected:
                 selectedUnit = null;
+                fluxPos = new Vector2Int();
                 VagueGameEvent.Instance.UnitDeselected(this);
+                VagueGameEvent.Instance.ActionMenuCloseRequest();
 
                 cursorState = CursorState.free;
                 break;
 
             case CursorState.unitMoved:
-                // Put unit back where he was
+                VagueGameEvent.Instance.UnitChangePosition(selectedUnit, selectedUnit.GetCoords());
+                VagueGameEvent.Instance.CancelMove(this, selectedUnit);
+
                 cursorState = CursorState.unitSelected;
                 break;
 
@@ -109,6 +136,21 @@ public class Cursor : MonoBehaviour
                 break;
         }
         //Debug.Log($"{cursorState}, {selectedUnit}");
+    }
+
+    private bool ShouldLock()
+    {
+        if (selectedUnit == null) return false;
+        else if (selectedUnit.moving) return true;
+        else return false;
+    }
+
+    private bool ValidMovTarget(Square targetSq)
+    {
+        if (targetSq.GetUnitOn() == selectedUnit) return true;
+        if (targetSq.GetUnitOn() != null) return false;
+        else if (targetSq.squareState != Square.SquareState.enabled) return false;
+        else return true;
     }
 
     Square GetCurrentSquare()

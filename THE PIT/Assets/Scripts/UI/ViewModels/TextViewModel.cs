@@ -13,5 +13,9 @@ public class TextViewModel : MonoBehaviour
             string healthString = health.ToString();
             textView.SetText(healthString);
         }
+        if (data is string unitName)
+        {
+            textView.SetText(unitName);
+        }
     }
 }
