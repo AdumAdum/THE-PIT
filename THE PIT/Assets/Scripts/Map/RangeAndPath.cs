@@ -6,9 +6,9 @@ using System.Linq;
 
 public class RangeAndPath
 {
-    // =============
-    // RANGE FINDING
-    // =============
+    // ============= //
+    // RANGE FINDING //
+    // ============= //
     public List<Square> GetMovSquaresInRange(Square[,] map, Vector2Int startVect)
     {
         var frontier = new List<Square>();
@@ -17,7 +17,7 @@ public class RangeAndPath
 
         Square startSq = map[startVect.x,startVect.y];
         startSq.pathCost = 0;
-        Unit unit = startSq.unitOn;
+        Unit unit = startSq.GetUnitOn();
 
         frontier.Add(startSq);
         inRangeTiles.Add(startSq);
@@ -28,7 +28,7 @@ public class RangeAndPath
             frontier.Remove(sq);
             explored.Add(sq);
 
-            if (sq.pathCost <= unit.stats["mov"])
+            if (sq.pathCost <= unit.stats["MOV"])
             {
                 inRangeTiles.Add(sq);
             }
@@ -38,9 +38,10 @@ public class RangeAndPath
 
             foreach (var neighbor in neighbors)
             {
+                if (NoNoSquare(unit, neighbor)) continue;
                 var newCost = sq.pathCost + neighbor.terrain["cost"];
                 if (newCost < neighbor.pathCost) neighbor.pathCost = newCost;
-                if (newCost <= unit.stats["mov"]) frontier.Add(neighbor);
+                if (newCost <= unit.stats["MOV"]) frontier.Add(neighbor);
             } 
         }
         foreach (var tile in explored) tile.pathCost = 99;
@@ -48,9 +49,15 @@ public class RangeAndPath
         return inRangeTiles.Distinct().ToList();
     }
 
-    // =============
-    // PATH FINDING
-    // =============
+    private bool NoNoSquare(Unit unit, Square sq)
+    {
+        if (sq.GetUnitOn() != null && unit.GetTeam() != sq.GetUnitOn().GetTeam()) return true;
+        return false;
+    }
+
+    // ============ //
+    // PATH FINDING //
+    // ============ //
     public List<Square> FindPath(Square[,] map, List<Square> inRangeSqs, Vector2Int start, Vector2Int end)
     {
         var frontier = new List<Square>();

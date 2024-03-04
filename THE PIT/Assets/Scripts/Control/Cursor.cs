@@ -73,9 +73,9 @@ public class Cursor : MonoBehaviour
         switch (cursorState)
         {
             case CursorState.free:
-                if (sq.unitOn == null || sq.unitOn.unitState != Unit.UnitState.free) return;
+                if (sq.GetUnitOn() == null || sq.GetUnitOn().unitState != Unit.UnitState.free) return;
                 
-                selectedUnit = sq.unitOn;
+                selectedUnit = sq.GetUnitOn();
                 VagueGameEvent.Instance.NewUnitClicked(sq.coords);
                 VagueGameEvent.Instance.ActionMenuOpenRequest(selectedUnit);
                 

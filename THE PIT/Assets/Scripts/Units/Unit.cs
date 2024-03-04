@@ -53,7 +53,7 @@ public class Unit : MonoBehaviour
 
     public string GetTeam()
     {
-        return GetComponentInParent<GameObject>().name;
+        return GetComponentInParent<Transform>().name;
     }
 
     // ======== //
@@ -103,6 +103,7 @@ public class Unit : MonoBehaviour
         Unit unit = (Unit) data;
         if (!ReferenceEquals(this, unit)) return;
 
+        posCache = unit.coords;
         EndMovement();
     }
 

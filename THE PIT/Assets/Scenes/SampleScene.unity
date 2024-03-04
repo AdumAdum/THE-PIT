@@ -308,7 +308,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1260551517}
   m_Father: {fileID: 1459038105}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -407,6 +408,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4986493234886562094, guid: 86ba4cc5ab6df7b438ae526976d5f92a, type: 3}
+      propertyPath: m_ChildAlignment
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86ba4cc5ab6df7b438ae526976d5f92a, type: 3}
 --- !u!224 &747473900 stripped
@@ -455,6 +460,7 @@ GameObject:
   m_Component:
   - component: {fileID: 882741846}
   - component: {fileID: 882741845}
+  - component: {fileID: 882741848}
   - component: {fileID: 882741847}
   m_Layer: 0
   m_Name: Knight
@@ -523,7 +529,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 882741844}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.5, y: -3.5, z: 0}
+  m_LocalPosition: {x: -4.5, y: -3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -545,8 +551,24 @@ MonoBehaviour:
   coords: {x: 4, y: 1}
   stats:
     keys:
-    - mov
-    values: 0a000000
+    - MOV
+    - HP
+    - STR
+    - DEF
+    values: 0a000000010000000000000000000000
+  unitState: 0
+--- !u!114 &882741848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882741844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed34bb7ad2dc8d3429dc51a6a82dda1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &991025041
 GameObject:
   m_ObjectHideFlags: 0
@@ -2602,12 +2624,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1260551516}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.5, y: -3.5, z: 0}
+  m_LocalPosition: {x: 0.5, y: -2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2097645606}
-  m_RootOrder: 1
+  m_Father: {fileID: 700188779}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1260551518
 MonoBehaviour:
@@ -2621,11 +2643,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a0be0253eb2354d910e138cae25be8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coords: {x: 10, y: 1}
+  coords: {x: 9, y: 2}
   stats:
     keys:
-    - mov
-    values: 0a000000
+    - MOV
+    - HP
+    - STR
+    - DEF
+    values: 0a000000010000000000000000000000
+  unitState: 0
 --- !u!212 &1260551519
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2667,9 +2693,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4ba8499ae8896e944ae2d7d6b4cbd4a0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8e13ab922851dc249849cc749d1deda8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -3254,7 +3280,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 882741846}
-  - {fileID: 1260551517}
   m_Father: {fileID: 1459038105}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3267,11 +3292,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7017075162347290272, guid: aaf9808639ed65b4b9c7a2b850a7f85f, type: 3}
       propertyPath: m_Pivot.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7017075162347290272, guid: aaf9808639ed65b4b9c7a2b850a7f85f, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7017075162347290272, guid: aaf9808639ed65b4b9c7a2b850a7f85f, type: 3}
       propertyPath: m_RootOrder
@@ -3529,7 +3554,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Action Menu Test
+  m_text: Action Menu
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3744,8 +3769,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 710.3539, y: -360.07916}
-  m_SizeDelta: {x: -402.962, y: 0}
+  m_AnchoredPosition: {x: 801, y: -362}
+  m_SizeDelta: {x: -954, y: -0.000030517578}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7626863950575034846
 GameObject:
