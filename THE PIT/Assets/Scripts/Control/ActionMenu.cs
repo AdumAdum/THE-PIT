@@ -32,6 +32,11 @@ public class ActionMenu : MonoBehaviour
         VagueGameEvent.Instance.UnitDeselected();
     }
 
+    public void ItemButtonPress()
+    {
+        VagueGameEvent.Instance.InventoryOpenRequest();
+    }
+
     private void UnitOpenActionMenu(object data)
     {
         if (data is not Unit ) return;

@@ -2,9 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "ItemSO")]
 public class ItemSO : ScriptableObject
 {
-    public string displayName;
-    public Sprite icon;
+    public string itemName;
+    public Sprite sprite;
+    public ItemType itemType;
+    public bool stackable;
+
+    public enum ItemType {
+        consumable,
+        material,
+        weapon
+    }
 }

@@ -16,16 +16,17 @@ public class Cursor : MonoBehaviour
     private Unit targetedUnit;
     private Vector2Int fluxPos;
 
-    private enum CursorState
+    public enum CursorState
     {
         free,
         unitSelected,
         locked,
         unitMoved,
+        inMenu,
         attackCursor,
         healCursor
     }
-    CursorState cursorState = CursorState.free;
+    private CursorState cursorState = CursorState.free;
 
     void Awake()
     {
@@ -35,6 +36,7 @@ public class Cursor : MonoBehaviour
     void EventSubscription()
     {
         VagueGameEvent.Instance.onUnitDeselected += CleanCursor;
+        VagueGameEvent.Instance.onInventoryOpenRequest += InventoryOpened;
     }
 
     void Start()
@@ -60,6 +62,16 @@ public class Cursor : MonoBehaviour
         fluxPos = new Vector2Int();
     }
 
+    void InventoryOpened()
+    {
+        cursorState = CursorState.inMenu;
+    }
+
+    void InventoryCancel()
+    {
+        cursorState = CursorState.unitMoved;
+    }
+
     // Left click / z / num6
     private void Interact(InputAction.CallbackContext context)
     {
@@ -78,6 +90,7 @@ public class Cursor : MonoBehaviour
                 selectedUnit = sq.GetUnitOn();
                 VagueGameEvent.Instance.NewUnitClicked(sq.coords);
                 VagueGameEvent.Instance.ActionMenuOpenRequest(selectedUnit);
+                fluxPos = sq.coords;
                 
                 cursorState = CursorState.unitSelected;
                 break;
@@ -107,6 +120,9 @@ public class Cursor : MonoBehaviour
 
                 break;
 
+            case CursorState.inMenu:
+                break;
+
             case CursorState.attackCursor:
                 break;
 
@@ -134,12 +150,22 @@ public class Cursor : MonoBehaviour
 
                 cursorState = CursorState.free;
                 break;
+            
+            case CursorState.locked:
+                break;
 
             case CursorState.unitMoved:
                 VagueGameEvent.Instance.UnitChangePosition(selectedUnit, selectedUnit.GetCoords());
                 VagueGameEvent.Instance.CancelMove(this, selectedUnit);
 
                 cursorState = CursorState.unitSelected;
+                break;
+
+            case CursorState.inMenu:
+                VagueGameEvent.Instance.InventoryCancelRequest();
+                if (selectedUnit.GetCoords() != fluxPos) cursorState = CursorState.unitMoved;
+                else cursorState = CursorState.unitSelected;
+                
                 break;
 
             case CursorState.attackCursor:

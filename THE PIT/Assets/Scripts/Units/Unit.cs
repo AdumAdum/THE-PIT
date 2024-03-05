@@ -42,6 +42,7 @@ public class Unit : MonoBehaviour
     {
         GetComponents();
         EventSubscription();
+        posCache = coords;
         VagueGameEvent.Instance.UnitChangePosition(this, coords);
     }
 
@@ -126,4 +127,8 @@ public class Unit : MonoBehaviour
         spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f, 1f);
         VagueGameEvent.Instance.UnitChangePosition(this, posCache);
     }
+
+    // ========= //
+    // INVENTORY //
+    // ========= //
 }

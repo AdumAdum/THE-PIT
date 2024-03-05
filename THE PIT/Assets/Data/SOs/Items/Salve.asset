@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 998e4c0cc070df84fb6b13a916e0b29b, type: 3}
+  m_Script: {fileID: 11500000, guid: 9300c049cd13eff449fe505402412a8a, type: 3}
   m_Name: Salve
   m_EditorClassIdentifier: 
-  displayName: Salve
-  icon: {fileID: 21300000, guid: 22236cf0823c2294c8c4b6bc5e0c551a, type: 3}
+  itemName: Salve
+  sprite: {fileID: 21300000, guid: 00fecb10f7db7d14b9731116cdbc4eb0, type: 3}
+  itemType: 0
+  stackable: 1

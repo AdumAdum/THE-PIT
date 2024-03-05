@@ -67,7 +67,7 @@ public class RangeAndPath
 
         while (frontier.Any())
         {
-            Square sq = frontier.OrderBy(x => x.terrain["cost"]).First();
+            Square sq = frontier.OrderBy(x => x.terrain["cost"] + GetManhattanDistance(x.coords, end)).First();
 
             frontier.Remove(sq);
             explored.Add(sq);
