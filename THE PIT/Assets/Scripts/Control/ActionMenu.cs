@@ -6,7 +6,7 @@ public class ActionMenu : MonoBehaviour
 {
     private CanvasGroup canvasGroup;
 
-    private Unit subjectUnit;
+    private Unit selectedUnit;
     //private Unit targetUnit;
 
     [Header("Events")]
@@ -27,14 +27,14 @@ public class ActionMenu : MonoBehaviour
 
     public void WaitButtonPress()
     {
-        VagueGameEvent.Instance.WaitButtonPress(this, subjectUnit);
+        VagueGameEvent.Instance.WaitButtonPress(this, selectedUnit);
         VagueGameEvent.Instance.ActionMenuCloseRequest();
         VagueGameEvent.Instance.UnitDeselected();
     }
 
     public void ItemButtonPress()
     {
-        VagueGameEvent.Instance.InventoryOpenRequest();
+        VagueGameEvent.Instance.InventoryOpenRequest(selectedUnit.unitInventory);
     }
 
     private void UnitOpenActionMenu(object data)
@@ -54,8 +54,8 @@ public class ActionMenu : MonoBehaviour
 
     public void OnUnitCall(Unit unit)
     {
-        subjectUnit = unit;
-        onUnitCall.Raise(this, subjectUnit);
+        selectedUnit = unit;
+        onUnitCall.Raise(this, selectedUnit);
     }
 
     private void EnableCanvasGroup()

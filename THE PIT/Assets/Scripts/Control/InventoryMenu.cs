@@ -10,7 +10,7 @@ public class InventoryMenu : MonoBehaviour
 
     private void EventSubscription()
     {
-        VagueGameEvent.Instance.onInventoryOpenRequest += EnableCanvasGroup;
+        VagueGameEvent.Instance.onInventoryOpenRequest += InMenuSetup;
         VagueGameEvent.Instance.onInventoryCancelRequest += DisableCanvasGroup;
     }
 
@@ -19,10 +19,11 @@ public class InventoryMenu : MonoBehaviour
         EventSubscription();
         canvasGroup = GetComponent<CanvasGroup>();
         DisableCanvasGroup();
-    }
+    }   
 
-    public void Hello()
-    {
+    private void InMenuSetup(object data)
+    {  
+        if (data is not UnitInventory unitInventory) return;
         EnableCanvasGroup();
     }
 

@@ -9,14 +9,9 @@ public class Item : MonoBehaviour
     [Header("UI")]
     public Sprite sprite;
 
-    private void Start()
-    {
-        InitItem(itemSO);
-    }
-
     public void InitItem(ItemSO newItem)
     {
-        sprite = newItem.sprite;
+        itemSO = newItem; 
+        sprite = itemSO.sprite;
     }
 }
-

@@ -15,6 +15,7 @@ public class Unit : MonoBehaviour
     public string team { get; private set; }
 
     private SpriteRenderer spriteRenderer;
+    public UnitInventory unitInventory { get; private set; }
 
     public enum UnitState
     {
@@ -35,6 +36,7 @@ public class Unit : MonoBehaviour
 
     private void GetComponents()
     {
+        unitInventory = GetComponent<UnitInventory>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 

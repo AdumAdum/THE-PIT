@@ -62,7 +62,7 @@ public class Cursor : MonoBehaviour
         fluxPos = new Vector2Int();
     }
 
-    void InventoryOpened()
+    void InventoryOpened(object data)
     {
         cursorState = CursorState.inMenu;
     }
