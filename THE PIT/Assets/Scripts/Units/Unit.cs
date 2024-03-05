@@ -31,7 +31,7 @@ public class Unit : MonoBehaviour
     private void EventSubscription()
     {
         VagueGameEvent.Instance.onCancelMove += PrematureMoveCancel;
-        VagueGameEvent.Instance.onWaitButtonPressed += Wait;
+        VagueGameEvent.Instance.onUnitEndAction += Wait;
     }
 
     private void GetComponents()
@@ -115,7 +115,7 @@ public class Unit : MonoBehaviour
     // ======= //
     private void Wait(Component sender, object data)
     {
-        if (sender is not ActionMenu || data is not Unit) return;
+        if (data is not Unit) return;
 
         Unit unit = (Unit) data;
         if (!ReferenceEquals(this, unit)) return;

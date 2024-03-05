@@ -5,8 +5,12 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ItemSO")]
 public class ItemSO : ScriptableObject
 {
+    [Header("Inventory")]
     public string itemName;
     public Sprite sprite;
+    public int uses;
+
+    [Header("Data")]
     public ItemType itemType;
     public bool stackable;
 

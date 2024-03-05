@@ -16,3 +16,4 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 00fecb10f7db7d14b9731116cdbc4eb0, type: 3}
   itemType: 0
   stackable: 1
+  uses: 3

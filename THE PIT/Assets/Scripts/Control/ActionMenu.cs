@@ -27,7 +27,7 @@ public class ActionMenu : MonoBehaviour
 
     public void WaitButtonPress()
     {
-        VagueGameEvent.Instance.WaitButtonPress(this, selectedUnit);
+        VagueGameEvent.Instance.UnitEndAction(this, selectedUnit);
         VagueGameEvent.Instance.ActionMenuCloseRequest();
         VagueGameEvent.Instance.UnitDeselected();
     }

@@ -162,7 +162,7 @@ public class Cursor : MonoBehaviour
                 break;
 
             case CursorState.inMenu:
-                VagueGameEvent.Instance.InventoryCancelRequest();
+                VagueGameEvent.Instance.InventoryCloseRequest();
                 if (selectedUnit.GetCoords() != fluxPos) cursorState = CursorState.unitMoved;
                 else cursorState = CursorState.unitSelected;
                 

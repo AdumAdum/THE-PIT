@@ -5,23 +5,27 @@ using UnityEngine;
 public class UnitInventory : MonoBehaviour
 {
     [SerializeField] int slots = 5;
-    public ItemSO[] unitInventory {get; private set;}
+    public ItemSO[] itemArray {get; private set;}
+
+    [Header("TestItem")]
+    [SerializeField] ItemSO testItemSO;
 
     public void Start()
     {
-        unitInventory = new ItemSO[slots];
+        itemArray = new ItemSO[slots];
+        AddItem(testItemSO);
     }
 
     public void AddItem(ItemSO itemSO)
     {
-        for (int i = 0; i < unitInventory.Length; i++)
+        for (int i = 0; i < itemArray.Length; i++)
         {
-            if (unitInventory[i] == null) 
+            if (itemArray[i] == null) 
             {
-                unitInventory[i] = itemSO;
-                break;
+                itemArray[i] = itemSO;
+                return;
             }
-            // Run inventory full please toss item method
         }
+        Debug.Log($"Inventory Full!");
     } 
 }
