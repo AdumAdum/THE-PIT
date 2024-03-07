@@ -4,11 +4,13 @@ using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InventorySlot : MonoBehaviour, IPointerClickHandler
+public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     private ItemSO item;
     private InventoryMenu parentMenu;
 
+    private Transform panel;
+    private Image panelImage;
     private Image icon;
     private CUIText itemNameText;
     private CUIText usesText;
@@ -18,7 +20,9 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
     void GetComponents()
     {
         canvasGroup = GetComponent<CanvasGroup>();
-        Transform panel = transform.Find("Panel");
+        
+        panel = transform.Find("Panel");
+        panelImage = panel.GetComponent<Image>();
 
         Transform ItemIcon = panel.Find("ItemIcon");
         icon = ItemIcon.GetComponent<Image>();
@@ -41,6 +45,16 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
         VagueGameEvent.Instance.InventoryCloseRequest();
         VagueGameEvent.Instance.ActionMenuCloseRequest();
         VagueGameEvent.Instance.ItemUsed(this, item);
+    }
+
+    void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
+    {
+        panelImage.color = new Color(0.9f,0.9f,0.9f,1);
+    }
+
+    void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
+    {
+        panelImage.color = Color.white;
     }
 
     public void Display(ItemSO itemSO)

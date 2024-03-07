@@ -19,4 +19,19 @@ public class ItemSO : ScriptableObject
         material,
         weapon
     }
+
+    public void Use()
+    {
+        switch (itemType)
+        {
+            case ItemType.consumable:
+            break;
+        }
+    }
+
+    public void Consume()
+    {
+        if (itemType != ItemType.consumable) return;
+
+    }
 }

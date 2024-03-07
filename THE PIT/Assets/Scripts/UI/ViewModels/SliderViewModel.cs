@@ -12,9 +12,9 @@ public class SliderViewModel : MonoBehaviour
         {
             slider.SetValue(intValue);
         }
-        else if (data is float floatValue)
-        {
-            slider.SetValue(floatValue);
-        }
+        // else if (data is float floatValue)
+        // {
+        //     slider.SetValue(floatValue);
+        // }
     }
 }

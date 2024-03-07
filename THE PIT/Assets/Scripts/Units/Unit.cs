@@ -12,10 +12,13 @@ public class Unit : MonoBehaviour
 
     [Header("Battle Info")]
     public UDictionary<string, int> stats;
+    public UDictionary<string, int> growths;
     public string team { get; private set; }
-
+    
+    // Components
     private SpriteRenderer spriteRenderer;
     public UnitInventory unitInventory { get; private set; }
+    private CUISlider healthBar;
 
     public enum UnitState
     {
@@ -38,14 +41,25 @@ public class Unit : MonoBehaviour
     {
         unitInventory = GetComponent<UnitInventory>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        
+        Canvas canvas = GetComponentInChildren<Canvas>() ?? null;
+        healthBar = canvas?.GetComponentInChildren<CUISlider>();
     }
 
     private void Start()
     {
         GetComponents();
         EventSubscription();
+        InitializeStats();
         posCache = coords;
         VagueGameEvent.Instance.UnitChangePosition(this, coords);
+    }
+
+    private void InitializeStats()
+    {
+        stats["hp"] = stats["MAXHP"] - 10;
+        UpdateHealthBar();
+        // Eventually, save and load stat valuse between maps (scenes)
     }
 
     // =================== //
@@ -133,4 +147,18 @@ public class Unit : MonoBehaviour
     // ========= //
     // INVENTORY //
     // ========= //
+
+
+
+    // ================ //
+    // HEALTH AND STATS //
+    // ================ //
+
+    private void UpdateHealthBar()
+    {
+        healthBar?.SetMinValue(0);
+        healthBar?.SetMaxValue(stats["MAXHP"]);
+        healthBar?.SetValue(stats["hp"]);
+    }
+
 }
