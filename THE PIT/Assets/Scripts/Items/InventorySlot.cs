@@ -7,8 +7,8 @@ using UnityEngine.EventSystems;
 public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     private ItemSO item;
-    private InventoryMenu parentMenu;
 
+    [SerializeField] InventoryMenu parentInventory;
     private Transform panel;
     private Image panelImage;
     private Image icon;
@@ -42,9 +42,9 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterH
 
     void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
     {
+        parentInventory.unitInventory.Use(item);
         VagueGameEvent.Instance.InventoryCloseRequest();
         VagueGameEvent.Instance.ActionMenuCloseRequest();
-        VagueGameEvent.Instance.ItemUsed(this, item);
     }
 
     void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)

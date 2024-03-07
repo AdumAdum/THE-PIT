@@ -5,10 +5,12 @@ using System.Linq;
 
 public class InventoryMenu : MonoBehaviour
 {
+    [SerializeField] List<GameObject> iSlotObjects;
+
     private CanvasGroup canvasGroup;
     private List<InventorySlot> inventorySlots;
 
-    private Unit subjectUnit;
+    public UnitInventory unitInventory { get; private set; } 
 
     private void EventSubscription()
     {
@@ -21,14 +23,9 @@ public class InventoryMenu : MonoBehaviour
         canvasGroup = GetComponent<CanvasGroup>();
         inventorySlots = new List<InventorySlot>();
         
-        Transform container = transform.Find("ContainerCenter/InventoryDisplay/ContainerRows");
-        if (container == null) return;
-        foreach (Transform child in container)
+        foreach (GameObject ob in iSlotObjects)
         {
-            if (child.TryGetComponent(out InventorySlot slot))
-            {
-                inventorySlots.Add(slot);
-            }
+            if (ob.TryGetComponent(out InventorySlot slot)) { inventorySlots.Add(slot); }
         }
     }
 
@@ -41,8 +38,9 @@ public class InventoryMenu : MonoBehaviour
 
     private void InMenuSetup(object data)
     {  
-        if (data is not UnitInventory unitInventory) return;
+        if (data is not UnitInventory invent) return;
 
+        unitInventory = invent;
         DisplayItems(unitInventory.itemArray);
 
         EnableCanvasGroup();

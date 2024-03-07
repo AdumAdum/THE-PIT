@@ -137,11 +137,24 @@ public class Unit : MonoBehaviour
         UnitDone();
     }
 
+    public void UseCosumable(Consumable item)
+    {
+        UDictionary<string, int> properties = item.GetProperties();
+        foreach (string key in properties.Keys)
+        {
+            stats[key] = Mathf.Min(stats[key] + properties[key], stats["MAXHP"]);
+        }
+        item.uses--;
+        UpdateHealthBar();
+        UnitDone();
+    }
+
     private void UnitDone()
     {
         unitState = UnitState.done;
         spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f, 1f);
         VagueGameEvent.Instance.UnitChangePosition(this, posCache);
+        VagueGameEvent.Instance.UnitDeselected();
     }
 
     // ========= //
