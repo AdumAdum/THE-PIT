@@ -16,6 +16,7 @@ public class ItemSO : ScriptableObject
     public Sprite sprite;
     public int uses;
 
-    [Header("Data")]
+    [Header("Gameplay")]
     public ItemType itemType;
+    public UDictionary<string, int> properties;
 }

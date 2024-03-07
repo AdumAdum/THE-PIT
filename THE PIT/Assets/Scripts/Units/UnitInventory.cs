@@ -5,33 +5,52 @@ using UnityEngine;
 public class UnitInventory : MonoBehaviour
 {
     [SerializeField] int slots = 5;
-    public ItemSO[] itemArray { get; private set; }
+    public Item[] itemArray { get; private set; }
     public Unit subjectUnit { get; private set; } 
 
     [Header("TestItem")]
-    [SerializeField] Consumable testCons;
+    [SerializeField] ItemSO testItem;
 
     public void Start()
     {
         subjectUnit = GetComponent<Unit>();
-        itemArray = new ItemSO[slots];
+        itemArray = new Item[slots];
         TestItemInit();
     }
 
     public void AddItem(ItemSO itemSO)
     {
+        Item item = ConvertToItem(itemSO);
         for (int i = 0; i < itemArray.Length; i++)
         {
             if (itemArray[i] == null) 
             {
-                itemArray[i] = itemSO;
+                itemArray[i] = item;
                 return;
             }
         }
         Debug.Log($"Inventory Full!");
     }
 
-    public void Use(ItemSO item)
+    Item ConvertToItem(ItemSO itemSO)
+    {
+        switch (itemSO.itemType)
+        {
+            case ItemType.consumable:
+            return new Consumable(itemSO);
+
+            case ItemType.material:
+            //Use((MaterialItem) item);
+            break;
+
+            case ItemType.weapon:
+            //Use((Weapon) item);
+            break;
+        }
+        return null;
+    }
+
+    public void Use(Item item)
     {
         switch (item.itemType)
         {
@@ -66,6 +85,6 @@ public class UnitInventory : MonoBehaviour
 
     private void TestItemInit()
     {
-        AddItem(testCons);
+        AddItem(testItem);
     } 
 }

@@ -46,7 +46,7 @@ public class InventoryMenu : MonoBehaviour
         EnableCanvasGroup();
     }
 
-    private void DisplayItems(ItemSO[] itemArray)
+    private void DisplayItems(Item[] itemArray)
     {
         if (!itemArray.Any()) { return; }
         for (int i = 0; i < itemArray.Length; i++)

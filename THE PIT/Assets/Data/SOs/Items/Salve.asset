@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52ef78d511de062469389b175463da6d, type: 3}
+  m_Script: {fileID: 11500000, guid: 9300c049cd13eff449fe505402412a8a, type: 3}
   m_Name: Salve
   m_EditorClassIdentifier: 
   itemName: Salve

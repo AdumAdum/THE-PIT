@@ -139,14 +139,16 @@ public class Unit : MonoBehaviour
 
     public void UseCosumable(Consumable item)
     {
+        item.SubUses();
+        UnitDone();
+        
         UDictionary<string, int> properties = item.GetProperties();
+        if (properties == null) { return; }
         foreach (string key in properties.Keys)
         {
             stats[key] = Mathf.Min(stats[key] + properties[key], stats["MAXHP"]);
         }
-        item.uses--;
         UpdateHealthBar();
-        UnitDone();
     }
 
     private void UnitDone()

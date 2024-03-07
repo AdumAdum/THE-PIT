@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    private ItemSO item;
+    private Item item;
 
     [SerializeField] InventoryMenu parentInventory;
     private Transform panel;
@@ -57,7 +57,7 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterH
         panelImage.color = Color.white;
     }
 
-    public void Display(ItemSO itemSO)
+    public void Display(Item itemSO)
     {
         EnableCanvasGroup();
 
