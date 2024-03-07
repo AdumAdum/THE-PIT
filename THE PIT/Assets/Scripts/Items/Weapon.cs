@@ -7,9 +7,4 @@ using UnityEngine;
 public class Weapon : Item
 {
     public Weapon(ItemSO itemSO) : base(itemSO) {}
-
-    public UDictionary<string, int> GetStats()
-    {
-        return properties;
-    }
 }

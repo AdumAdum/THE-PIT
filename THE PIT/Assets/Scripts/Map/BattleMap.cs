@@ -19,11 +19,15 @@ public class BattleMap : MonoBehaviour
     {
         // Cursor
         VagueGameEvent.Instance.onNewUnitClicked += GetUnitRange;
-        VagueGameEvent.Instance.onUnitDeselected += Cancel;
+        VagueGameEvent.Instance.onUnitDeselected += HideRangeCache;
         VagueGameEvent.Instance.onUnitMoveRequest += MoveUnit;
 
         // Unit
         VagueGameEvent.Instance.onUnitChangePosition += UpdateUnitPosition;
+
+        //Inventory
+        VagueGameEvent.Instance.onInventoryOpenRequest += HideRangeCache;
+        VagueGameEvent.Instance.onInventoryCloseRequest += ShowRangeCache;
     }
 
     // Get all tiles put in a 2d array according to their position
@@ -83,16 +87,6 @@ public class BattleMap : MonoBehaviour
         sqArray[coords.x,coords.y].SetUnitOn(unit);
     }
 
-    private void Cancel()
-    {
-        HideUnitRange();
-    }
-
-    private void HideUnitRange()
-    {
-        foreach (var sq in rangeCache) sq.HideTile();
-    }
-
     private void GetUnitRange(object data)
     {
         if (data is not Vector2Int) return;
@@ -101,6 +95,29 @@ public class BattleMap : MonoBehaviour
 
         rangeCache = rangeAndPath.GetMovSquaresInRange(sqArray, pos);
         //List<Square> atkSqs = GetAtkSquaresInRange(pos);
+       ShowUnitRange();
+    }
+
+    // Misc Event-Based Hide/show functions, could reformat but this works fine
+    private void HideRangeCache(object who, object cares) {
+        HideUnitRange();
+    }
+
+    private void HideRangeCache() {
+        HideUnitRange();
+    }
+
+    private void ShowRangeCache() {
+        ShowUnitRange();
+    }
+
+    private void HideUnitRange() {
+        foreach (var sq in rangeCache) sq.HideTile();
+    }
+
+    private void ShowUnitRange() {
         foreach (var sq in rangeCache) sq.ShowTile();
     }
+
+
 }

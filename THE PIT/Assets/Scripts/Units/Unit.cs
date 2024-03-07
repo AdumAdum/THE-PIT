@@ -70,7 +70,7 @@ public class Unit : MonoBehaviour
 
     public string GetTeam()
     {
-        return GetComponentInParent<Transform>().name;
+        return transform.parent.name;
     }
 
     // ======== //

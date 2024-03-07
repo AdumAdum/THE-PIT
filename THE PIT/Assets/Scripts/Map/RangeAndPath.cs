@@ -49,6 +49,12 @@ public class RangeAndPath
         return inRangeTiles.Distinct().ToList();
     }
 
+    public List<Square> GetAtkSquaresFromTileAndWeaponRange(Square[,] map, Vector2Int startVect, int[] range)
+    {
+        
+        return null;
+    }
+
     private bool NoNoSquare(Unit unit, Square sq)
     {
         if (sq.GetUnitOn() != null && unit.GetTeam() != sq.GetUnitOn().GetTeam()) return true;

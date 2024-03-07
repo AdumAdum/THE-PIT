@@ -34,7 +34,12 @@ public class ActionMenu : MonoBehaviour
 
     public void ItemButtonPress()
     {
-        VagueGameEvent.Instance.InventoryOpenRequest(selectedUnit.unitInventory);
+        VagueGameEvent.Instance.InventoryOpenRequest(selectedUnit.unitInventory, IMState.IMItem);
+    }
+
+    public void AttackButtonPress()
+    {
+        VagueGameEvent.Instance.InventoryOpenRequest(selectedUnit.unitInventory, IMState.IMAttack);
     }
 
     private void UnitOpenActionMenu(object data)

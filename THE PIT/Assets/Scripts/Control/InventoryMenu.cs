@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+public enum IMState {
+    IMItem,
+    IMAttack,
+}
+
 public class InventoryMenu : MonoBehaviour
 {
     [SerializeField] List<GameObject> iSlotObjects;
@@ -11,6 +16,7 @@ public class InventoryMenu : MonoBehaviour
     private List<InventorySlot> inventorySlots;
 
     public UnitInventory unitInventory { get; private set; } 
+    public IMState menuState { get; private set; }
 
     private void EventSubscription()
     {
@@ -36,11 +42,12 @@ public class InventoryMenu : MonoBehaviour
         DisableCanvasGroup();
     }   
 
-    private void InMenuSetup(object data)
+    private void InMenuSetup(object im, object ms)
     {  
-        if (data is not UnitInventory invent) return;
+        if (im is not UnitInventory invent || ms is not IMState state ) return;
 
         unitInventory = invent;
+        menuState = state;
         DisplayItems(unitInventory.itemArray);
 
         EnableCanvasGroup();

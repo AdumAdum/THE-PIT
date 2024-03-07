@@ -22,5 +22,10 @@ public abstract class Item
         itemType = itemSO.itemType;
         properties = itemSO.properties;
     }
+
+    public UDictionary<string, int> GetProperties()
+    {
+        return properties;
+    }
 }
 

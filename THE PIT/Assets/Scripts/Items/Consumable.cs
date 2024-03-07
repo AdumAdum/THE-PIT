@@ -8,11 +8,6 @@ public class Consumable : Item
 {
     public Consumable(ItemSO itemSO) : base(itemSO) {}
 
-    public UDictionary<string, int> GetProperties()
-    {
-        return properties;
-    }
-
     public void SubUses(int val=1)
     {
         uses -= val;

@@ -9,7 +9,7 @@ public class UnitInventory : MonoBehaviour
     public Unit subjectUnit { get; private set; } 
 
     [Header("TestItem")]
-    [SerializeField] ItemSO testItem;
+    [SerializeField] List<ItemSO> testItems;
 
     public void Start()
     {
@@ -44,8 +44,7 @@ public class UnitInventory : MonoBehaviour
             break;
 
             case ItemType.weapon:
-            //Use((Weapon) item);
-            break;
+            return new Weapon(itemSO);
         }
         return null;
     }
@@ -85,6 +84,9 @@ public class UnitInventory : MonoBehaviour
 
     private void TestItemInit()
     {
-        AddItem(testItem);
+        foreach (ItemSO testItemSO in testItems) 
+        { 
+            if (testItemSO != null) AddItem(testItemSO); 
+        } 
     } 
 }

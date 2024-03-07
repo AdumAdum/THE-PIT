@@ -62,7 +62,7 @@ public class Cursor : MonoBehaviour
         fluxPos = new Vector2Int();
     }
 
-    void InventoryOpened(object data)
+    void InventoryOpened(object who, object cares)
     {
         cursorState = CursorState.inMenu;
     }
@@ -85,7 +85,7 @@ public class Cursor : MonoBehaviour
         switch (cursorState)
         {
             case CursorState.free:
-                if (sq.GetUnitOn() == null || sq.GetUnitOn().unitState != Unit.UnitState.free) return;
+                if (!ValidUnitClick(sq)) return;
                 
                 selectedUnit = sq.GetUnitOn();
                 VagueGameEvent.Instance.NewUnitClicked(sq.coords);
@@ -193,6 +193,15 @@ public class Cursor : MonoBehaviour
         if (targetSq.GetUnitOn() != null) return false;
         else if (targetSq.squareState != Square.SquareState.enabled) return false;
         else return true;
+    }
+
+    private bool ValidUnitClick(Square targetSq)
+    {
+        Unit unit = targetSq.GetUnitOn();
+        if (unit == null) { return false; } 
+        if (unit.unitState != Unit.UnitState.free) { return false; }
+        if (unit.GetTeam() != "PlayerUnits") { return false; }
+        return true;
     }
 
     Square GetCurrentSquare()

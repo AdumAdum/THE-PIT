@@ -17,7 +17,7 @@ public class VagueGameEvent : MonoBehaviour
         _instance = this;
     }
 
-    // X->Y isn't all events can do. I want to send this to multiple different scripts I can easily. Hooray!
+    // X->Y isn't all events can do. If I want to send this to multiple different scripts I can easily. Hooray!
 
     // InventorySlot -> Inventory
     public event Action<Component, object> onInventorySlotClicked;
@@ -33,13 +33,14 @@ public class VagueGameEvent : MonoBehaviour
         onUnitEndAction?.Invoke(sender, data);
     }
 
-    // Inventory->Cursor+...
-    public event Action<object> onInventoryOpenRequest;
-    public void InventoryOpenRequest(object data)
+    // ActionMenu->Inventory
+    public event Action<object, object> onInventoryOpenRequest;
+    public void InventoryOpenRequest(object unitInventory, object menuState)
     {
-        onInventoryOpenRequest?.Invoke(data);
+        onInventoryOpenRequest?.Invoke(unitInventory, menuState);
     }
 
+    // Inventory->Cursor+...
     public event Action onInventoryCloseRequest;
     public void InventoryCloseRequest()
     {
