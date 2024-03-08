@@ -21,7 +21,7 @@ public class InventoryMenu : MonoBehaviour
 
     private void EventSubscription()
     {
-        VagueGameEvent.Instance.onInventoryOpenRequest += InMenuSetup;
+        VagueGameEvent.Instance.OnInventoryOpenRequest += InMenuSetup;
         VagueGameEvent.Instance.onInventoryCloseRequest += DisableCanvasGroup;
     }
 

@@ -7,6 +7,7 @@ public class UnitInventory : MonoBehaviour
     [SerializeField] int slots = 5;
     public Item[] itemArray { get; private set; }
     public Unit subjectUnit { get; private set; } 
+    public Weapon equippedItem { get; private set;}
 
     [Header("TestItem")]
     [SerializeField] List<ItemSO> testItems;
@@ -16,6 +17,7 @@ public class UnitInventory : MonoBehaviour
         subjectUnit = GetComponent<Unit>();
         itemArray = new Item[slots];
         TestItemInit();
+        AutoEquip();
     }
 
     public void AddItem(ItemSO itemSO)
@@ -49,38 +51,30 @@ public class UnitInventory : MonoBehaviour
         return null;
     }
 
-    public void Use(Item item)
+    public void Equip(Item it)
     {
-        switch (item.itemType)
+        if (it is not Weapon weapon) { return; }
+        equippedItem = weapon;
+        // Debug.Log($"Equipped: {weapon.itemName}");
+    }
+
+    public void AutoEquip()
+    {
+        for (int i = 0; i < itemArray.Length; i++)
         {
-            case ItemType.consumable:
-            Use((Consumable) item);
-            break;
-
-            case ItemType.material:
-            //Use((MaterialItem) item);
-            break;
-
-            case ItemType.weapon:
-            //Use((Weapon) item);
-            break;
+            if (itemArray[i]?.itemType == ItemType.weapon) 
+            {
+                Equip(itemArray[i]);
+                return;
+            }
         }
     }
 
-    public void Use(Consumable item)
+    public void Use(Item it)
     {
+        if (it is not Consumable item) { return; }
         subjectUnit.UseCosumable(item);
     }
-
-    // public void Use(Weapon item)
-    // {
-
-    // }
-    
-    // public void Use(Material item)
-    // {
-
-    // }
 
     private void TestItemInit()
     {

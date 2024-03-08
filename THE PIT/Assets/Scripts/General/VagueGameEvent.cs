@@ -19,51 +19,92 @@ public class VagueGameEvent : MonoBehaviour
 
     // X->Y isn't all events can do. If I want to send this to multiple different scripts I can easily. Hooray!
 
-    // ItemStatsMenu->BattleMap
-    public event Action onEnterAttackMode;
-    public void EnterAttackMode()
+    // BattleForecast->CombatManager
+    public event Action<object, object> OnCombatBegin;
+    public void CombatBegin(object subject, object target)
     {
-        onEnterAttackMode?.Invoke();
+        OnCombatBegin?.Invoke(subject, target);
     }
 
-    public event Action<object, object> onWeaponDisplayRangeRequest;
+    // ActionMenu->BattleForecast
+    public event Action OnCombatRequest;
+    public void CombatRequest()
+    {
+        OnCombatRequest?.Invoke();
+    }
+
+    // BattleForecast->ActionMenu
+    public event Action OnActivateExecuteButton;
+    public void ActivateExecuteButton()
+    {
+        OnActivateExecuteButton?.Invoke();
+    }
+
+    public event Action OnDeactivateExecuteButton;
+    public void DeactivateExecuteButton()
+    {
+        OnDeactivateExecuteButton?.Invoke();
+    }
+
+    // x->BattleForecast
+    public event Action<object, object> OnOpenBattleForecastRequest;
+    public void OpenBattleForecastRequest(object subject, object target)
+    {
+        OnOpenBattleForecastRequest?.Invoke(subject, target);
+    }
+
+    public event Action OnCloseBattleForecastRequest;
+    public void CloseBattleForecastRequest()
+    {
+        OnCloseBattleForecastRequest?.Invoke();
+    }
+
+
+    // ItemStatsMenu->BattleMap
+    public event Action OnEnterPreAttackMode;
+    public void EnterPreAttackMode()
+    {
+        OnEnterPreAttackMode?.Invoke();
+    }
+
+    public event Action<object, object> OnWeaponDisplayRangeRequest;
     public void WeaponRangeDisplayRequest(object unit, object weapon)
     {
-        onWeaponDisplayRangeRequest?.Invoke(unit, weapon);
+        OnWeaponDisplayRangeRequest?.Invoke(unit, weapon);
     }
 
     // InventoryMenu->ItemStatsMenu
-    public event Action<object, object> onItemStatsMenuOpenRequest;
+    public event Action<object, object> OnItemStatsMenuOpenRequest;
     public void ItemStatsMenuOpenRequest(object unit, object item)
     {
-        onItemStatsMenuOpenRequest?.Invoke(unit, item);
+        OnItemStatsMenuOpenRequest?.Invoke(unit, item);
     }
 
-    public event Action onItemStatsMenuCloseRequest;
+    public event Action OnItemStatsMenuCloseRequest;
     public void ItemStatsMenuCloseRequest()
     {
-        onItemStatsMenuCloseRequest?.Invoke();
+        OnItemStatsMenuCloseRequest?.Invoke();
     } 
 
     // InventorySlot -> Inventory
-    public event Action<Component, object> onInventorySlotClicked;
+    public event Action<Component, object> OnInventorySlotClicked;
     public void InventorySlotClicked(Component sender, object data)
     {
-        onInventorySlotClicked?.Invoke(sender, data);
+        OnInventorySlotClicked?.Invoke(sender, data);
     }
 
     // ActionMenu->Unit & ActionMenu->Map
-    public event Action<Component, object> onUnitEndAction;
+    public event Action<Component, object> OnUnitEndAction;
     public void UnitEndAction(Component sender, object data)
     {
-        onUnitEndAction?.Invoke(sender, data);
+        OnUnitEndAction?.Invoke(sender, data);
     }
 
     // ActionMenu->Inventory
-    public event Action<object, object> onInventoryOpenRequest;
+    public event Action<object, object> OnInventoryOpenRequest;
     public void InventoryOpenRequest(object unitInventory, object menuState)
     {
-        onInventoryOpenRequest?.Invoke(unitInventory, menuState);
+        OnInventoryOpenRequest?.Invoke(unitInventory, menuState);
     }
 
     // Inventory->Cursor+...
@@ -74,50 +115,48 @@ public class VagueGameEvent : MonoBehaviour
     }
 
     // Cursor->Unit
-    public event Action<Component, object> onCancelMove;
+    public event Action<Component, object> OnCancelMove;
     public void CancelMove(Component sender, object data)
     {
-        onCancelMove?.Invoke(sender, data);
+        OnCancelMove?.Invoke(sender, data);
     }
 
     // Unit->Map
-    public event Action<Component, object> onUnitChangePosition;
+    public event Action<Component, object> OnUnitChangePosition;
     public void UnitChangePosition(Component sender, object data) 
     {
-        onUnitChangePosition?.Invoke(sender, data);
+        OnUnitChangePosition?.Invoke(sender, data);
     }
 
     // x->ActionMenu
-    public event Action<object> onActionMenuOpenRequest;
+    public event Action<object> OnActionMenuOpenRequest;
     public void ActionMenuOpenRequest(object data)
     {
-        onActionMenuOpenRequest?.Invoke(data);
+        OnActionMenuOpenRequest?.Invoke(data);
     }
 
-    public event Action onActionMenuCloseRequest;
+    public event Action OnActionMenuCloseRequest;
     public void ActionMenuCloseRequest()
     {
-        onActionMenuCloseRequest?.Invoke();
+        OnActionMenuCloseRequest?.Invoke();
     }
 
     // Cursor->Map
-    public event Action<object> onNewUnitClicked;
+    public event Action<object> OnNewUnitClicked;
     public void NewUnitClicked(object data)
     {
-        onNewUnitClicked?.Invoke(data);
+        OnNewUnitClicked?.Invoke(data);
     }
 
-    public event Action onUnitDeselected; // + ActionMenu -> Cursor
+    public event Action OnUnitDeselected; // + ActionMenu -> Cursor
     public void UnitDeselected()
     {
-        onUnitDeselected?.Invoke();
+        OnUnitDeselected?.Invoke();
     }
 
-    public event Action<Component, object, object, object> onUnitMoveRequest;
+    public event Action<Component, object, object, object> OnUnitMoveRequest;
     public void UnitMoveRequest(Component sender, object unit, object currentPosition, object finalPosition)
     {
-        onUnitMoveRequest?.Invoke(sender, unit, currentPosition, finalPosition);
+        OnUnitMoveRequest?.Invoke(sender, unit, currentPosition, finalPosition);
     }
-    
-
 }

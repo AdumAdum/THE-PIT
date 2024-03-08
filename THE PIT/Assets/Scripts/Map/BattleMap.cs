@@ -19,20 +19,20 @@ public class BattleMap : MonoBehaviour
     private void EventSubscription()
     {
         // Cursor
-        VagueGameEvent.Instance.onNewUnitClicked += GetUnitRange;
-        VagueGameEvent.Instance.onUnitDeselected += HideRangeCache;
-        VagueGameEvent.Instance.onUnitMoveRequest += MoveUnit;
+        VagueGameEvent.Instance.OnNewUnitClicked += GetUnitRange;
+        VagueGameEvent.Instance.OnUnitDeselected += HideRangeCache;
+        VagueGameEvent.Instance.OnUnitMoveRequest += MoveUnit;
 
         // Unit
-        VagueGameEvent.Instance.onUnitChangePosition += UpdateUnitPosition;
+        VagueGameEvent.Instance.OnUnitChangePosition += UpdateUnitPosition;
 
         //Inventory
         VagueGameEvent.Instance.onInventoryCloseRequest += ShowRangeCache;
-        VagueGameEvent.Instance.onInventoryOpenRequest += HideRangeCache;
+        VagueGameEvent.Instance.OnInventoryOpenRequest += HideRangeCache;
   
         //ItemStats
-        VagueGameEvent.Instance.onWeaponDisplayRangeRequest += ShowAtkFromTile;
-        VagueGameEvent.Instance.onEnterAttackMode += ShowOnlyEnemySquares;
+        VagueGameEvent.Instance.OnWeaponDisplayRangeRequest += ShowAtkFromTile;
+        VagueGameEvent.Instance.OnEnterPreAttackMode += ShowOnlyEnemySquares;
     }
 
     // Get all tiles put in a 2d array according to their position
@@ -127,16 +127,19 @@ public class BattleMap : MonoBehaviour
 
     private void HideRangeCache(object who, object cares)
     {
+        HideUnitRange(atkRangeCache);
         HideUnitRange(movRangeCache);
     }
 
     private void HideRangeCache()
     {
+        HideUnitRange(atkRangeCache);
         HideUnitRange(movRangeCache);
     }
 
     private void ShowAtkRange(List<Square> range)
     {
+        if (range == null) { return; }
         foreach (var sq in range) sq.ShowAtkTile();
     }
 

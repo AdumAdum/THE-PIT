@@ -18,9 +18,10 @@ MonoBehaviour:
   itemType: 2
   properties:
     keys:
+    - MAG
     - PWR
     - ACC
     - CRT
     - AVO
-    values: 63000000e703000019fcffff00000000
+    values: 0000000063000000e703000019fcffff00000000
   range: 0100000003000000

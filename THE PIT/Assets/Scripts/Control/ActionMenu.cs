@@ -9,13 +9,18 @@ public class ActionMenu : MonoBehaviour
     private Unit selectedUnit;
     //private Unit targetUnit;
 
+    [SerializeField] CUIButton ExecuteButton;
+
     [Header("Events")]
     public SpecificGameEvent onUnitCall;
 
     private void EventSubscription()
     {
-        VagueGameEvent.Instance.onActionMenuOpenRequest += UnitOpenActionMenu;
-        VagueGameEvent.Instance.onActionMenuCloseRequest += CloseActionMenu;
+        VagueGameEvent.Instance.OnActionMenuOpenRequest += UnitOpenActionMenu;
+        VagueGameEvent.Instance.OnActionMenuCloseRequest += CloseActionMenu;
+        
+        VagueGameEvent.Instance.OnActivateExecuteButton += EnableExecuteButton;
+        VagueGameEvent.Instance.OnDeactivateExecuteButton += DisableExecuteButton;
     }
 
     void Start()
@@ -27,8 +32,8 @@ public class ActionMenu : MonoBehaviour
 
     public void WaitButtonPress()
     {
+        EventCloseAllMenus();
         VagueGameEvent.Instance.UnitEndAction(this, selectedUnit);
-        VagueGameEvent.Instance.ActionMenuCloseRequest();
         VagueGameEvent.Instance.UnitDeselected();
     }
 
@@ -40,6 +45,22 @@ public class ActionMenu : MonoBehaviour
     public void AttackButtonPress()
     {
         VagueGameEvent.Instance.InventoryOpenRequest(selectedUnit.unitInventory, IMState.IMAttack);
+    }
+
+    public void ExecuteButtonPress()
+    {
+        EventCloseAllMenus();
+        VagueGameEvent.Instance.CombatRequest();
+        VagueGameEvent.Instance.UnitEndAction(this, selectedUnit);
+        VagueGameEvent.Instance.UnitDeselected();
+    }
+
+    private void EventCloseAllMenus()
+    {
+        VagueGameEvent.Instance.ActionMenuCloseRequest();
+        VagueGameEvent.Instance.InventoryCloseRequest();
+        VagueGameEvent.Instance.CloseBattleForecastRequest();
+        VagueGameEvent.Instance.ItemStatsMenuCloseRequest();
     }
 
     private void UnitOpenActionMenu(object data)
@@ -61,6 +82,22 @@ public class ActionMenu : MonoBehaviour
     {
         selectedUnit = unit;
         onUnitCall.Raise(this, selectedUnit);
+    }
+
+    private void EnableExecuteButton()
+    {
+        CanvasGroup cg = ExecuteButton.transform.GetComponent<CanvasGroup>();
+        cg.alpha = 1;
+        cg.interactable = true;
+        cg.blocksRaycasts = true;
+    }
+
+    private void DisableExecuteButton()
+    {
+        CanvasGroup cg = ExecuteButton.transform.GetComponent<CanvasGroup>();
+        cg.alpha = 0;
+        cg.interactable = false;
+        cg.blocksRaycasts = false;
     }
 
     private void EnableCanvasGroup()

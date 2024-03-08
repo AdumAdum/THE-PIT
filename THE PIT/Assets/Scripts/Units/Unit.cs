@@ -33,8 +33,8 @@ public class Unit : MonoBehaviour
     // ============== //
     private void EventSubscription()
     {
-        VagueGameEvent.Instance.onCancelMove += PrematureMoveCancel;
-        VagueGameEvent.Instance.onUnitEndAction += Wait;
+        VagueGameEvent.Instance.OnCancelMove += PrematureMoveCancel;
+        VagueGameEvent.Instance.OnUnitEndAction += Wait;
     }
 
     private void GetComponents()
@@ -71,10 +71,9 @@ public class Unit : MonoBehaviour
     public Vector2Int GetPosCache(){ return posCache; }
     public void SetPosCache(Vector2Int newPos) { posCache = newPos; }
 
-    public string GetTeam()
-    {
-        return transform.parent.name;
-    }
+    public string GetTeam() { return transform.parent.name; }
+
+    public SpriteRenderer GetSpriteRenderer() { return spriteRenderer; }
 
     // ======== //
     // MOVEMENT //
@@ -172,7 +171,7 @@ public class Unit : MonoBehaviour
     // HEALTH AND STATS //
     // ================ //
 
-    private void UpdateHealthBar()
+    public void UpdateHealthBar()
     {
         healthBar?.SetMinValue(0);
         healthBar?.SetMaxValue(stats["MAXHP"]);

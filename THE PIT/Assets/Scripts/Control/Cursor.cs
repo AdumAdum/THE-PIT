@@ -35,10 +35,10 @@ public class Cursor : MonoBehaviour
 
     void EventSubscription()
     {
-        VagueGameEvent.Instance.onUnitDeselected += CleanCursor;
-        VagueGameEvent.Instance.onInventoryOpenRequest += InventoryOpened;
+        VagueGameEvent.Instance.OnUnitDeselected += CleanCursor;
+        VagueGameEvent.Instance.OnInventoryOpenRequest += InventoryOpened;
         VagueGameEvent.Instance.onInventoryCloseRequest += InventoryCancel; 
-        VagueGameEvent.Instance.onEnterAttackMode += EnterAttackMode;
+        VagueGameEvent.Instance.OnEnterPreAttackMode += EnterPreAttackMode;
     }
 
     void Start()
@@ -74,9 +74,9 @@ public class Cursor : MonoBehaviour
         cursorState = CursorState.unitMoved;
     }
 
-    void EnterAttackMode()
+    void EnterPreAttackMode()
     {
-        cursorState = CursorState.attackCursor;
+        cursorState = CursorState.inMenu;
     }
 
     // Left click / z / num6
@@ -128,9 +128,15 @@ public class Cursor : MonoBehaviour
                 break;
 
             case CursorState.inMenu:
+                if (!ValidAtkTarget(sq)) return;
+                VagueGameEvent.Instance.OpenBattleForecastRequest(selectedUnit, sq.GetUnitOn());
+
+                cursorState = CursorState.attackCursor;
                 break;
 
             case CursorState.attackCursor:
+                if (!ValidAtkTarget(sq)) return;
+                VagueGameEvent.Instance.OpenBattleForecastRequest(selectedUnit, sq.GetUnitOn());
                 break;
 
             case CursorState.healCursor:
@@ -145,7 +151,7 @@ public class Cursor : MonoBehaviour
     // Right click / X / num2
     private void Cancel(InputAction.CallbackContext context)
     {
-        Debug.Log($"StartState: {cursorState}");
+        // Debug.Log($"StartState: {cursorState}");
         switch (cursorState)
         {
             case CursorState.free:
@@ -178,8 +184,8 @@ public class Cursor : MonoBehaviour
                 break;
 
             case CursorState.attackCursor:
-                VagueGameEvent.Instance.InventoryCloseRequest();
-                cursorState = CursorState.unitMoved;
+                VagueGameEvent.Instance.CloseBattleForecastRequest();
+                cursorState = CursorState.inMenu;
                 break;
 
             case CursorState.healCursor:
@@ -188,7 +194,7 @@ public class Cursor : MonoBehaviour
             default:
                 break;
         }
-        Debug.Log($"EndState: {cursorState}");
+        // Debug.Log($"EndState: {cursorState}");
     }
 
     private bool ShouldLock()
@@ -212,6 +218,14 @@ public class Cursor : MonoBehaviour
         if (unit == null) { return false; } 
         if (unit.unitState != Unit.UnitState.free) { return false; }
         if (unit.GetTeam() != "PlayerUnits") { return false; }
+        return true;
+    }
+
+    private bool ValidAtkTarget(Square targetSq)
+    {
+        if (targetSq.squareState != Square.SquareState.attack) { return false; }
+        if (targetSq.GetUnitOn() == null) { return false; }
+        if (targetSq.GetUnitOn().GetTeam() != "EnemyUnits") { return false; }
         return true;
     }
 

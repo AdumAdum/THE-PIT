@@ -63,36 +63,34 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterH
         {
             case ItemType.consumable:
             if (imstate is IMState.IMItem){ 
-                parentInventory.unitInventory.Use(itemInSlot);
                 CloseIMandAM(); 
+                parentInventory.unitInventory.Use(itemInSlot);
             }
-            break;
+            return;
 
             case ItemType.material:
-            break;
+            return;
 
             case ItemType.weapon:
             if (imstate is IMState.IMAttack){
                 slotState = SlotState.selected;
                 panelImage.color = colSelected;
-                VagueGameEvent.Instance.EnterAttackMode();
+                EquipSlotWeapon();
+                VagueGameEvent.Instance.EnterPreAttackMode();
             }
-            break;
+            return;
 
             default: 
-            break;
-        }
-        parentInventory.unitInventory.Use(itemInSlot);
-
-        if (itemInSlot.itemType == ItemType.consumable)
-        {
-
+            return;
         }
     }
 
-    
+    private void EquipSlotWeapon()
+    {
+        subjectUnit.unitInventory.Equip(itemInSlot);
+    }
 
-    void CloseIMandAM()
+    private void CloseIMandAM()
     {
         VagueGameEvent.Instance.ItemStatsMenuCloseRequest();
         VagueGameEvent.Instance.InventoryCloseRequest();

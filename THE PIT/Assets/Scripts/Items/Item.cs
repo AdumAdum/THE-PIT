@@ -30,5 +30,10 @@ public abstract class Item
     {
         return properties;
     }
+
+    public void SubUses(int val=1)
+    {
+        uses -= val;
+    }
 }
 

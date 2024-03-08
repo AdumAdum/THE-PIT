@@ -24,8 +24,8 @@ public class ItemStatsMenu : MonoBehaviour
 
     private void EventSubscription()
     {
-        VagueGameEvent.Instance.onItemStatsMenuOpenRequest += ItemStatsMenuSetup;
-        VagueGameEvent.Instance.onItemStatsMenuCloseRequest += DisableCanvasGroup;
+        VagueGameEvent.Instance.OnItemStatsMenuOpenRequest += ItemStatsMenuSetup;
+        VagueGameEvent.Instance.OnItemStatsMenuCloseRequest += DisableCanvasGroup;
         VagueGameEvent.Instance.onInventoryCloseRequest += DisableCanvasGroup;
     }
 
@@ -78,16 +78,16 @@ public class ItemStatsMenu : MonoBehaviour
         Weapon weapon = (Weapon)item;
         
         string atk = CF.WPN_ATK_PHYS(subjectUnit, weapon).ToString();
-        intFields[0].SetText($"{atk}");
+        intFields[0].SetText(atk);
         
         string hit = CF.WPN_HIT(subjectUnit, weapon).ToString();
-        intFields[1].SetText($"{hit}");
+        intFields[1].SetText(hit);
     
         string crt = CF.WPN_CRT(subjectUnit, weapon).ToString();
-        intFields[2].SetText($"{crt}");
+        intFields[2].SetText(crt);
 
         string avo = CF.WPN_AVO(subjectUnit, weapon).ToString();
-        intFields[3].SetText($"{avo}");
+        intFields[3].SetText(avo);
 
         VagueGameEvent.Instance.WeaponRangeDisplayRequest(subjectUnit, weapon);
     }
