@@ -11,9 +11,10 @@ public class BattleMap : MonoBehaviour
     [SerializeField] Square overSqaurePrefab;
     [SerializeField] GameObject overSquareContainer;
 
-    private static RangeAndPath rangeAndPath = new RangeAndPath();
+    private static RangeAndPath RP = new RangeAndPath();
 
-    private List<Square> rangeCache;
+    private List<Square> movRangeCache;
+    private List<Square> atkRangeCache;
 
     private void EventSubscription()
     {
@@ -26,8 +27,12 @@ public class BattleMap : MonoBehaviour
         VagueGameEvent.Instance.onUnitChangePosition += UpdateUnitPosition;
 
         //Inventory
-        VagueGameEvent.Instance.onInventoryOpenRequest += HideRangeCache;
         VagueGameEvent.Instance.onInventoryCloseRequest += ShowRangeCache;
+        VagueGameEvent.Instance.onInventoryOpenRequest += HideRangeCache;
+  
+        //ItemStats
+        VagueGameEvent.Instance.onWeaponDisplayRangeRequest += ShowAtkFromTile;
+        VagueGameEvent.Instance.onEnterAttackMode += ShowOnlyEnemySquares;
     }
 
     // Get all tiles put in a 2d array according to their position
@@ -65,7 +70,7 @@ public class BattleMap : MonoBehaviour
         Vector2Int start = (Vector2Int) currentPosition;
         Vector2Int end = (Vector2Int) finalPosition;
 
-        unitToMove.StartMove(rangeAndPath.FindPath(sqArray, rangeCache, start, end));
+        unitToMove.StartMove(RP.FindPath(sqArray, movRangeCache, start, end));
     }
 
     private void UpdateUnitPosition(Component sender, object data)
@@ -93,31 +98,55 @@ public class BattleMap : MonoBehaviour
 
         Vector2Int pos = (Vector2Int) data;
 
-        rangeCache = rangeAndPath.GetMovSquaresInRange(sqArray, pos);
+        movRangeCache = RP.GetMovSquaresInRange(sqArray, pos);
         //List<Square> atkSqs = GetAtkSquaresInRange(pos);
-       ShowUnitRange();
+        ShowUnitRange(movRangeCache);
     }
 
     // Misc Event-Based Hide/show functions, could reformat but this works fine
-    private void HideRangeCache(object who, object cares) {
-        HideUnitRange();
+    private void ShowOnlyEnemySquares()
+    {
+        List<Square> sqs = RP.GetEnemyUnitSquaresFromRange(atkRangeCache);
+        HideUnitRange(atkRangeCache);
+        ShowAtkRange(sqs);
     }
 
-    private void HideRangeCache() {
-        HideUnitRange();
+    private void ShowAtkFromTile(object un, object wp)
+    {
+        if (un is not Unit unit || wp is not Weapon weapon) return;
+
+        atkRangeCache = RP.GetAtkSquaresFromTileAndWeaponRange(sqArray, unit.GetPosCache(), weapon.range);
+        ShowAtkRange(atkRangeCache);
+    }
+    
+    private void ShowRangeCache()
+    {
+        HideUnitRange(atkRangeCache);
+        ShowUnitRange(movRangeCache);
     }
 
-    private void ShowRangeCache() {
-        ShowUnitRange();
+    private void HideRangeCache(object who, object cares)
+    {
+        HideUnitRange(movRangeCache);
     }
 
-    private void HideUnitRange() {
-        foreach (var sq in rangeCache) sq.HideTile();
+    private void HideRangeCache()
+    {
+        HideUnitRange(movRangeCache);
     }
 
-    private void ShowUnitRange() {
-        foreach (var sq in rangeCache) sq.ShowTile();
+    private void ShowAtkRange(List<Square> range)
+    {
+        foreach (var sq in range) sq.ShowAtkTile();
     }
 
+    private void ShowUnitRange(List<Square> range) {
+        if (range == null) { return; }
+        foreach (var sq in range) sq.ShowTile();
+    }
 
+    private void HideUnitRange(List<Square> range) {
+        if (range == null) { return; }
+        foreach (var sq in range) sq.HideTile();
+    }
 }

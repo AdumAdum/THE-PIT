@@ -19,4 +19,8 @@ MonoBehaviour:
   properties:
     keys:
     - PWR
-    values: 63000000
+    - ACC
+    - CRT
+    - AVO
+    values: 63000000e703000019fcffff00000000
+  range: 0100000003000000

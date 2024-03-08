@@ -11,6 +11,7 @@ public enum IMState {
 public class InventoryMenu : MonoBehaviour
 {
     [SerializeField] List<GameObject> iSlotObjects;
+    [SerializeField] ItemStatsMenu itemStatsMenu;
 
     private CanvasGroup canvasGroup;
     private List<InventorySlot> inventorySlots;

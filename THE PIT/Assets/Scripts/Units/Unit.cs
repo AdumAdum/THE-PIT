@@ -68,6 +68,9 @@ public class Unit : MonoBehaviour
     public Vector2Int GetCoords(){ return coords; }
     public void SetCoords(Vector2Int newCoords) { coords = newCoords; }
 
+    public Vector2Int GetPosCache(){ return posCache; }
+    public void SetPosCache(Vector2Int newPos) { posCache = newPos; }
+
     public string GetTeam()
     {
         return transform.parent.name;

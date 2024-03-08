@@ -19,6 +19,32 @@ public class VagueGameEvent : MonoBehaviour
 
     // X->Y isn't all events can do. If I want to send this to multiple different scripts I can easily. Hooray!
 
+    // ItemStatsMenu->BattleMap
+    public event Action onEnterAttackMode;
+    public void EnterAttackMode()
+    {
+        onEnterAttackMode?.Invoke();
+    }
+
+    public event Action<object, object> onWeaponDisplayRangeRequest;
+    public void WeaponRangeDisplayRequest(object unit, object weapon)
+    {
+        onWeaponDisplayRangeRequest?.Invoke(unit, weapon);
+    }
+
+    // InventoryMenu->ItemStatsMenu
+    public event Action<object, object> onItemStatsMenuOpenRequest;
+    public void ItemStatsMenuOpenRequest(object unit, object item)
+    {
+        onItemStatsMenuOpenRequest?.Invoke(unit, item);
+    }
+
+    public event Action onItemStatsMenuCloseRequest;
+    public void ItemStatsMenuCloseRequest()
+    {
+        onItemStatsMenuCloseRequest?.Invoke();
+    } 
+
     // InventorySlot -> Inventory
     public event Action<Component, object> onInventorySlotClicked;
     public void InventorySlotClicked(Component sender, object data)

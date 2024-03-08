@@ -19,4 +19,7 @@ public class ItemSO : ScriptableObject
     [Header("Gameplay")]
     public ItemType itemType;
     public UDictionary<string, int> properties;
+
+    [Header("Weapon Only")]
+    public int[] range;
 }

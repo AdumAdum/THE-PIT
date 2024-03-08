@@ -37,6 +37,8 @@ public class Cursor : MonoBehaviour
     {
         VagueGameEvent.Instance.onUnitDeselected += CleanCursor;
         VagueGameEvent.Instance.onInventoryOpenRequest += InventoryOpened;
+        VagueGameEvent.Instance.onInventoryCloseRequest += InventoryCancel; 
+        VagueGameEvent.Instance.onEnterAttackMode += EnterAttackMode;
     }
 
     void Start()
@@ -70,6 +72,11 @@ public class Cursor : MonoBehaviour
     void InventoryCancel()
     {
         cursorState = CursorState.unitMoved;
+    }
+
+    void EnterAttackMode()
+    {
+        cursorState = CursorState.attackCursor;
     }
 
     // Left click / z / num6
@@ -132,12 +139,13 @@ public class Cursor : MonoBehaviour
             default:
                 break;
         }
-        //Debug.Log($"{cursorState}, {selectedUnit}");
+        
     }
 
     // Right click / X / num2
     private void Cancel(InputAction.CallbackContext context)
     {
+        Debug.Log($"StartState: {cursorState}");
         switch (cursorState)
         {
             case CursorState.free:
@@ -163,12 +171,15 @@ public class Cursor : MonoBehaviour
 
             case CursorState.inMenu:
                 VagueGameEvent.Instance.InventoryCloseRequest();
+                //VagueGameEvent.Instance.
                 if (selectedUnit.GetCoords() != fluxPos) cursorState = CursorState.unitMoved;
                 else cursorState = CursorState.unitSelected;
                 
                 break;
 
             case CursorState.attackCursor:
+                VagueGameEvent.Instance.InventoryCloseRequest();
+                cursorState = CursorState.unitMoved;
                 break;
 
             case CursorState.healCursor:
@@ -177,7 +188,7 @@ public class Cursor : MonoBehaviour
             default:
                 break;
         }
-        //Debug.Log($"{cursorState}, {selectedUnit}");
+        Debug.Log($"EndState: {cursorState}");
     }
 
     private bool ShouldLock()

@@ -8,17 +8,20 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterH
 {
     [Header("Setup")]
     [SerializeField] InventoryMenu parentInventory;
-    [SerializeField] Color colDefault = new Color(1,1,1,1);
-    [SerializeField] Color colSelected = new Color(0.9f,0.9f,0.9f,1);
-    [SerializeField] Color colDisabled = new Color(0.2f,0.2f,0.2f,1);
+    private Color colDefault = new Color(1,1,1);
+    private Color colHighlight = new Color(0.9f,0.9f,0.9f);
+    private Color colDisabled = new Color(0.5f,0.5f,0.5f);
+    private Color colSelected = new Color(0.2f,0.2f,0.7f);
 
     private enum SlotState {
         disabled,
         enabled,
+        selected
     }
     private SlotState slotState = SlotState.disabled;
 
     private Item itemInSlot;
+    private Unit subjectUnit;
 
     // Child UI elements
     private Transform panel;
@@ -69,6 +72,11 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterH
             break;
 
             case ItemType.weapon:
+            if (imstate is IMState.IMAttack){
+                slotState = SlotState.selected;
+                panelImage.color = colSelected;
+                VagueGameEvent.Instance.EnterAttackMode();
+            }
             break;
 
             default: 
@@ -82,21 +90,26 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterH
         }
     }
 
+    
+
     void CloseIMandAM()
     {
+        VagueGameEvent.Instance.ItemStatsMenuCloseRequest();
         VagueGameEvent.Instance.InventoryCloseRequest();
         VagueGameEvent.Instance.ActionMenuCloseRequest();
     }
 
     void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     {
-        if (slotState == SlotState.disabled) { return; }
-        panelImage.color = colSelected;
+        if (slotState != SlotState.enabled) { return; }
+        VagueGameEvent.Instance.ItemStatsMenuOpenRequest(subjectUnit, itemInSlot);
+        panelImage.color = colHighlight;
     }
 
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
     {
-        if (slotState == SlotState.disabled) { return; }
+        if (slotState != SlotState.enabled) { return; }
+        VagueGameEvent.Instance.ItemStatsMenuCloseRequest();
         panelImage.color = colDefault;
     }
 
@@ -108,6 +121,8 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterH
         icon.sprite = itemInSlot.sprite;
         itemNameText.SetText(itemInSlot.itemName);
         usesText.SetText(itemInSlot.uses.ToString());
+
+        subjectUnit = parentInventory.unitInventory.subjectUnit;
 
         CheckShouldEnableSlot();
 
@@ -149,6 +164,10 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterH
             case SlotState.enabled:
             panelImage.color = colDefault;
             break;
+
+            case SlotState.selected:
+            panelImage.color = colSelected;
+            break;
         }
     }
 
@@ -165,6 +184,4 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterH
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
     }
-
-
 }

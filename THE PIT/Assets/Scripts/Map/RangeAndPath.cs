@@ -38,7 +38,7 @@ public class RangeAndPath
 
             foreach (var neighbor in neighbors)
             {
-                if (NoNoSquare(unit, neighbor)) continue;
+                if (EnemySquare(unit, neighbor)) continue;
                 var newCost = sq.pathCost + neighbor.terrain["cost"];
                 if (newCost < neighbor.pathCost) neighbor.pathCost = newCost;
                 if (newCost <= unit.stats["MOV"]) frontier.Add(neighbor);
@@ -49,13 +49,56 @@ public class RangeAndPath
         return inRangeTiles.Distinct().ToList();
     }
 
-    public List<Square> GetAtkSquaresFromTileAndWeaponRange(Square[,] map, Vector2Int startVect, int[] range)
+    public List<Square> GetAtkSquaresFromTileAndWeaponRange(Square[,] map, Vector2Int startVect, int[] wpnRange)
     {
-        
-        return null;
+        // return squares at a distance from int[] range away  with a loop
+        var frontier = new List<Square>();
+        var explored = new List<Square>();
+        var inRangeTiles = new List<Square>();
+
+        Square startSq = map[startVect.x,startVect.y];
+        int maxRange = wpnRange.Last();
+        startSq.pathCost = 0;
+
+        frontier.Add(startSq);
+
+        while (frontier.Any())
+        {
+            var sq = frontier.First();
+            frontier.Remove(sq);
+            explored.Add(sq);
+
+            foreach (int val in wpnRange) { 
+                if (sq.pathCost == val) { inRangeTiles.Add(sq); }
+            }
+
+            var neighbors = GetAdjSquares(map, sq.coords);
+            neighbors = neighbors.Except(explored).ToList();
+
+            foreach (var neighbor in neighbors)
+            {
+                var newCost = sq.pathCost + 1;
+                if (newCost < neighbor.pathCost) neighbor.pathCost = newCost;
+                if (newCost <= maxRange) frontier.Add(neighbor);
+            } 
+        }
+        foreach (var tile in explored) tile.pathCost = 99;
+
+        return inRangeTiles.Distinct().ToList();
     }
 
-    private bool NoNoSquare(Unit unit, Square sq)
+    public List<Square> GetEnemyUnitSquaresFromRange(List<Square> range)
+    {
+        List<Square> finishedList = new List<Square>();
+        foreach (var sq in range){
+            if (sq.GetUnitOn() != null && sq.GetUnitOn().GetTeam() == "EnemyUnits") { 
+                finishedList.Add(sq);
+            }
+        } 
+        return finishedList; 
+    }
+
+    private bool EnemySquare(Unit unit, Square sq)
     {
         if (sq.GetUnitOn() != null && unit.GetTeam() != sq.GetUnitOn().GetTeam()) return true;
         return false;
@@ -134,4 +177,3 @@ public class RangeAndPath
     }
 
 }
-
